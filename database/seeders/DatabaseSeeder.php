@@ -197,11 +197,11 @@ class DatabaseSeeder extends Seeder
             ],
         ]);
 
-        // 7. OBS Broadcast Output Token
+        // 7. OBS Broadcast Output Token (Dynamic Random Token)
         BroadcastOutput::create([
             'match_id' => $match->id,
             'user_id' => $user->id,
-            'token' => 'abc123demo',
+            'token' => Str::random(16),
             'is_active' => true,
         ]);
     }

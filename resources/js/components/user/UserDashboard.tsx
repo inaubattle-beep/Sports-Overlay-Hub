@@ -21,7 +21,7 @@ export const UserDashboard: React.FC<Props> = ({ onOpenCreateMatch }) => {
     fetchMatches();
   }, []);
 
-  const activeToken = activeMatch?.broadcastOutputs?.[0]?.token || 'abc123demo';
+  const activeToken = activeMatch?.broadcastOutputs?.[0]?.token || activeMatch?.slug || (activeMatch?.id ? `token-${activeMatch.id}` : 'live-stream');
   const obsUrl = `${window.location.origin}/overlay/${activeToken}`;
   const remoteUrl = `${window.location.origin}/remote/${activeToken}`;
 

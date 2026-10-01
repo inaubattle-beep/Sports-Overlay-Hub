@@ -59,8 +59,8 @@ export const MobileRemoteController: React.FC<Props> = ({ match, onScore, onUndo
   const awayName = match.awayTeam?.name || 'Away';
   const homeId = match.homeTeam?.id;
   const awayId = match.awayTeam?.id;
-  const matchCode = match.slug || `GAME-${match.id}`;
-  const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(window.location.origin + '/overlay/' + (match.broadcastOutputs?.[0]?.token || 'abc123demo'))}`;
+  const activeMatchToken = match.broadcastOutputs?.[0]?.token || match.slug || `token-${match.id}`;
+  const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(window.location.origin + '/overlay/' + activeMatchToken)}`;
 
   return (
     <div className="w-full max-w-md mx-auto bg-slate-900 border border-slate-800 rounded-3xl p-5 shadow-2xl text-white select-none relative">

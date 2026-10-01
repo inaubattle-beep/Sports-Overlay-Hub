@@ -15,7 +15,7 @@ export const StandaloneRemoteView: React.FC<Props> = ({ token }) => {
   const [isGuideOpen, setIsGuideOpen] = useState(false);
   const [statusNotice, setStatusNotice] = useState<string | null>(null);
 
-  const cleanToken = token ? token.split('?')[0].replace(/\/$/, '') : 'abc123demo';
+  const cleanToken = token ? token.split('?')[0].replace(/\/$/, '') : '';
 
   const fetchState = async () => {
     try {

@@ -11,7 +11,7 @@ export const OBSOverlayView: React.FC<Props> = ({ token }) => {
   const [match, setMatch] = useState<GameMatch | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  const cleanToken = token ? token.split('?')[0].replace(/\/$/, '') : 'abc123demo';
+  const cleanToken = token ? token.split('?')[0].replace(/\/$/, '') : '';
 
   const fetchState = async () => {
     try {
