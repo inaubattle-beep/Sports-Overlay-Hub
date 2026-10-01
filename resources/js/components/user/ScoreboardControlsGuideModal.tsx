@@ -124,6 +124,44 @@ export const ScoreboardControlsGuideModal: React.FC<Props> = ({ isOpen, onClose 
                 </p>
               </div>
 
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-1.5">
+                  <h4 className="font-bold text-emerald-400 text-sm flex items-center gap-1.5">
+                    💰 Budget-friendly Pricing
+                  </h4>
+                  <p className="text-slate-400 text-xs">
+                    High-quality scoring solutions that won't break the bank. Our flexible plans accommodate teams of any size.
+                  </p>
+                </div>
+
+                <div className="bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-1.5">
+                  <h4 className="font-bold text-amber-400 text-sm flex items-center gap-1.5">
+                    ⏱️ Setup in Under 60 Seconds
+                  </h4>
+                  <p className="text-slate-400 text-xs">
+                    Just copy the browser source URL into OBS. No plugins to install, no software to download, no complicated configuration files.
+                  </p>
+                </div>
+
+                <div className="bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-1.5">
+                  <h4 className="font-bold text-blue-400 text-sm flex items-center gap-1.5">
+                    📡 Works with Any Streaming Setup
+                  </h4>
+                  <p className="text-slate-400 text-xs">
+                    Compatible with OBS Studio, Streamlabs, vMix, Wirecast, XSplit, and any software supporting browser sources. One URL works everywhere.
+                  </p>
+                </div>
+
+                <div className="bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-1.5">
+                  <h4 className="font-bold text-purple-400 text-sm flex items-center gap-1.5">
+                    📺 Broadcast-Quality Graphics
+                  </h4>
+                  <p className="text-slate-400 text-xs">
+                    Professional overlays with transparency, smooth animations, and HD resolution. Make your stream look like ESPN on any budget.
+                  </p>
+                </div>
+              </div>
+
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-2">
                   <div className="w-8 h-8 rounded-xl bg-blue-600/20 text-blue-400 flex items-center justify-center font-black text-sm">1</div>
