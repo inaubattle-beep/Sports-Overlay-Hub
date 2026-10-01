@@ -36,6 +36,47 @@ export const UserDashboard: React.FC<Props> = ({ onOpenCreateMatch }) => {
 
   return (
     <div className="max-w-7xl mx-auto p-6 space-y-8">
+      {/* Hero Value Banner */}
+      <div className="bg-gradient-to-r from-blue-950 via-slate-900 to-indigo-950 border border-blue-500/30 rounded-3xl p-6 md:p-8 shadow-2xl space-y-4">
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+          <div>
+            <span className="inline-block px-3 py-1 bg-blue-500/20 border border-blue-500/40 rounded-full text-[11px] font-bold text-blue-300 uppercase tracking-widest mb-2">
+              ⚡ Instant Scoreboard Setup
+            </span>
+            <h1 className="text-2xl md:text-3xl font-black text-white">Create a Live Scoreboard in Seconds</h1>
+            <p className="text-slate-400 text-xs md:text-sm max-w-2xl mt-1">
+              Customize the display, share one link, and run the match from any phone, tablet, or laptop — no download, no hardware needed.
+            </p>
+          </div>
+          <button
+            onClick={onOpenCreateMatch}
+            className="px-6 py-3.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-black text-xs rounded-2xl shadow-xl shadow-blue-500/25 flex items-center gap-2 active:scale-95 transition shrink-0"
+          >
+            <Plus className="w-4 h-4" /> Start Live Scoreboard
+          </button>
+        </div>
+
+        {/* Feature Pill Highlights */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 pt-3 border-t border-slate-800 text-xs">
+          <div className="flex items-center gap-2 bg-slate-950/60 border border-slate-800/80 p-2.5 rounded-xl">
+            <span className="text-blue-400 font-bold">🎨</span>
+            <span className="text-slate-300 font-bold">Customize Display</span>
+          </div>
+          <div className="flex items-center gap-2 bg-slate-950/60 border border-slate-800/80 p-2.5 rounded-xl">
+            <span className="text-emerald-400 font-bold">🔗</span>
+            <span className="text-slate-300 font-bold">Share One Link</span>
+          </div>
+          <div className="flex items-center gap-2 bg-slate-950/60 border border-slate-800/80 p-2.5 rounded-xl">
+            <span className="text-amber-400 font-bold">📱</span>
+            <span className="text-slate-300 font-bold">Phone Remote Control</span>
+          </div>
+          <div className="flex items-center gap-2 bg-slate-950/60 border border-slate-800/80 p-2.5 rounded-xl">
+            <span className="text-purple-400 font-bold">🚀</span>
+            <span className="text-slate-300 font-bold">Zero Download / Hardware</span>
+          </div>
+        </div>
+      </div>
+
       {/* Matches List Header Bar */}
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 bg-slate-900 border border-slate-800 p-6 rounded-3xl shadow-xl">
         <div>
