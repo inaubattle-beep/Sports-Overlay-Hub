@@ -39,11 +39,23 @@ class MatchController extends Controller
             'color' => $match->awayTeam->primary_color ?? '#dc2626',
         ];
 
+        $templateData = [
+            'id' => $match->template->id ?? 1,
+            'slug' => $match->template->slug ?? 'football-glossy',
+            'name' => $match->template->name ?? 'Football Glossy',
+        ];
+
         return array_merge($match->toArray(), [
+            'sport' => [
+                'id' => $match->sport->id ?? 1,
+                'code' => $match->sport->code ?? 'football',
+                'name' => $match->sport->name ?? 'Football',
+            ],
             'homeTeam' => $homeTeamData,
             'home_team' => $homeTeamData,
             'awayTeam' => $awayTeamData,
             'away_team' => $awayTeamData,
+            'template' => $templateData,
             'broadcastOutputs' => $match->broadcastOutputs,
             'broadcast_outputs' => $match->broadcastOutputs,
         ]);
@@ -128,6 +140,10 @@ class MatchController extends Controller
             'away_points' => 0,
         ];
 
+        $defaultTemplateId = $validated['selected_template_id'] 
+            ?? \App\Models\ScoreboardTemplate::where('sport_id', $sport->id)->value('id')
+            ?? \App\Models\ScoreboardTemplate::first()?->id;
+
         $match = GameMatch::create([
             'sport_id' => $sport->id,
             'user_id' => $userId,
@@ -136,7 +152,7 @@ class MatchController extends Controller
             'status' => 'scheduled',
             'home_team_id' => $homeTeam->id,
             'away_team_id' => $awayTeam->id,
-            'selected_template_id' => $validated['selected_template_id'] ?? null,
+            'selected_template_id' => $defaultTemplateId,
             'current_state' => $initialState,
         ]);
 
