@@ -12,6 +12,7 @@ interface Props {
 export const UserDashboard: React.FC<Props> = ({ onOpenCreateMatch }) => {
   const { matches, activeMatch, fetchMatches, selectMatch, sendScoreEvent, undoLastEvent } = useMatchStore();
   const [copiedToken, setCopiedToken] = useState(false);
+  const [copiedRemoteToken, setCopiedRemoteToken] = useState(false);
   const [viewMode, setViewMode] = useState<'desktop' | 'mobile'>('desktop');
   const [selectedTemplateSlug, setSelectedTemplateSlug] = useState<string>('football-glossy');
   const [isGuideOpen, setIsGuideOpen] = useState(false);
@@ -22,11 +23,18 @@ export const UserDashboard: React.FC<Props> = ({ onOpenCreateMatch }) => {
 
   const activeToken = activeMatch?.broadcastOutputs?.[0]?.token || 'abc123demo';
   const obsUrl = `${window.location.origin}/overlay/${activeToken}`;
+  const remoteUrl = `${window.location.origin}/remote/${activeToken}`;
 
   const copyObsUrl = () => {
     navigator.clipboard.writeText(obsUrl);
     setCopiedToken(true);
     setTimeout(() => setCopiedToken(false), 2000);
+  };
+
+  const copyRemoteUrl = () => {
+    navigator.clipboard.writeText(remoteUrl);
+    setCopiedRemoteToken(true);
+    setTimeout(() => setCopiedRemoteToken(false), 2000);
   };
 
   const canvasOptions = [
@@ -223,6 +231,42 @@ export const UserDashboard: React.FC<Props> = ({ onOpenCreateMatch }) => {
               </div>
               <p className="text-[11px] text-slate-500">
                 Paste this link as a <span className="text-slate-300 font-bold">Browser Source</span> (Width: 900, Height: 200) in <span className="text-amber-400 font-bold">OBS Studio, Streamlabs, vMix, PRISM Live Studio</span>, or venue displays. Background is 100% transparent.
+              </p>
+            </div>
+
+            {/* Dedicated Browser Remote Controller URL Box */}
+            <div className="bg-gradient-to-r from-slate-900 via-blue-950/40 to-slate-900 border border-blue-500/30 rounded-3xl p-6 shadow-xl space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-bold text-emerald-400 uppercase tracking-widest flex items-center gap-1.5">
+                  <Smartphone className="w-4 h-4 text-emerald-400" /> Dedicated Browser Remote Controller Link
+                </span>
+                <a
+                  href={`/remote/${activeToken}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-xs text-emerald-400 hover:underline flex items-center gap-1 font-bold"
+                >
+                  Open Remote Page <ExternalLink className="w-3.5 h-3.5" />
+                </a>
+              </div>
+
+              <div className="flex items-center gap-2 bg-slate-950 border border-slate-800 p-2.5 rounded-2xl">
+                <input
+                  type="text"
+                  readOnly
+                  value={remoteUrl}
+                  className="bg-transparent text-xs font-mono text-emerald-300 w-full outline-none px-2"
+                />
+                <button
+                  onClick={copyRemoteUrl}
+                  className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-xl shadow shrink-0 flex items-center gap-1.5"
+                >
+                  <Copy className="w-3.5 h-3.5" />
+                  {copiedRemoteToken ? 'Copied!' : 'Copy Remote Link'}
+                </button>
+              </div>
+              <p className="text-[11px] text-slate-500">
+                Share this dedicated link with anyone on your media team to operate scoreboards remotely from any browser, tablet, or phone without logging into your account.
               </p>
             </div>
           </div>

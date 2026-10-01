@@ -18,8 +18,10 @@ Route::prefix('v1')->middleware('throttle:60,1')->group(function () {
         Route::post('/auth/login', [AuthController::class, 'login']);
     });
 
-    // Public OBS Overlay State
+    // Public OBS Overlay State & Remote Control
     Route::get('/overlay/{token}/state', [OverlayController::class, 'getStateByToken']);
+    Route::post('/remote/{token}/score', [OverlayController::class, 'scoreByToken']);
+    Route::post('/remote/{token}/undo', [OverlayController::class, 'undoByToken']);
     Route::get('/templates/public', [TemplateController::class, 'index']);
 
     // Protected Routes (Sanctum)

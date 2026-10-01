@@ -11,6 +11,7 @@ import { WalletModal } from './components/wallet/WalletModal';
 import { MatchCreatorModal } from './components/user/MatchCreatorModal';
 import { AuthModal } from './components/auth/AuthModal';
 import { OBSOverlayView } from './components/overlay/OBSOverlayView';
+import { StandaloneRemoteView } from './components/mobile/StandaloneRemoteView';
 
 const App: React.FC = () => {
   const [activeView, setActiveView] = useState<'dashboard' | 'teams' | 'reports' | 'admin' | 'marketplace'>('dashboard');
@@ -30,6 +31,12 @@ const App: React.FC = () => {
   if (path.startsWith('/overlay/')) {
     const token = path.split('/overlay/')[1];
     return <OBSOverlayView token={token} />;
+  }
+
+  // Standalone Remote Controller Direct Browser View (/remote/TOKEN, /control/TOKEN, /controller/TOKEN)
+  if (path.startsWith('/remote/') || path.startsWith('/control/') || path.startsWith('/controller/')) {
+    const token = path.split('/')[2];
+    return <StandaloneRemoteView token={token} />;
   }
 
   return (
