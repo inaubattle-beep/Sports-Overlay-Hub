@@ -132,7 +132,7 @@ export const Navbar: React.FC<Props> = ({
         {user ? (
           <div className="flex items-center gap-3 border-l border-slate-800 pl-4">
             <div className="text-right hidden sm:block">
-              <div className="text-xs font-bold text-white">{user.name}</div>
+              <div className="text-xs font-bold text-white">Welcome back {user.name} 👋</div>
               <div className="text-[10px] text-slate-400 capitalize">{user.role}</div>
             </div>
             <button
