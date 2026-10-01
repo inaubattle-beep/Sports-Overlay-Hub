@@ -23,6 +23,10 @@ export const OBSOverlayView: React.FC<Props> = ({ token }) => {
         setError('No match state returned');
       }
     } catch (err: any) {
+      if (err.response?.status === 429) {
+        // Retain active overlay match graphic on screen if rate limited
+        return;
+      }
       setError(err.response?.data?.message || 'Failed to load overlay state');
     }
   };

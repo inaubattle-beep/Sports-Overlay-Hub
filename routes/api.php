@@ -11,19 +11,21 @@ use App\Http\Controllers\Api\V1\TeamController;
 use App\Http\Controllers\Api\V1\PlayerController;
 use App\Http\Controllers\Api\V1\ReportController;
 
-Route::prefix('v1')->middleware('throttle:60,1')->group(function () {
+Route::prefix('v1')->group(function () {
+    // High-Frequency Broadcast Overlay Polling & Remote Control (600 req/min per IP)
+    Route::middleware('throttle:600,1')->group(function () {
+        Route::get('/overlay/{token}/state', [OverlayController::class, 'getStateByToken']);
+        Route::post('/remote/{token}/score', [OverlayController::class, 'scoreByToken']);
+        Route::post('/remote/{token}/undo', [OverlayController::class, 'undoByToken']);
+        Route::get('/matches', [MatchController::class, 'index']);
+        Route::get('/templates/public', [TemplateController::class, 'index']);
+    });
+
     // Public Auth with strict rate limit
     Route::middleware('throttle:10,1')->group(function () {
         Route::post('/auth/register', [AuthController::class, 'register']);
         Route::post('/auth/login', [AuthController::class, 'login']);
     });
-
-    // Public OBS Overlay State, Matches Index & Remote Control
-    Route::get('/overlay/{token}/state', [OverlayController::class, 'getStateByToken']);
-    Route::post('/remote/{token}/score', [OverlayController::class, 'scoreByToken']);
-    Route::post('/remote/{token}/undo', [OverlayController::class, 'undoByToken']);
-    Route::get('/templates/public', [TemplateController::class, 'index']);
-    Route::get('/matches', [MatchController::class, 'index']);
 
     // Protected Routes (Sanctum)
     Route::middleware('auth:sanctum')->group(function () {

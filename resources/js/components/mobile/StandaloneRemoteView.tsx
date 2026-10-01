@@ -25,6 +25,9 @@ export const StandaloneRemoteView: React.FC<Props> = ({ token }) => {
         setError(null);
       }
     } catch (err: any) {
+      if (err.response?.status === 429) {
+        return;
+      }
       setError(err.response?.data?.message || 'Remote session expired or invalid token');
     }
   };
