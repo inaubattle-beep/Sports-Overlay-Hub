@@ -105,28 +105,50 @@ export const TemplateMarketplace: React.FC<Props> = ({ onOpenWallet }) => {
 
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 text-xs">
           <div className="bg-slate-950/60 border border-slate-800 p-3.5 rounded-2xl space-y-1">
-            <div className="text-slate-400 text-[10px] font-bold uppercase">Scoreboards</div>
-            <div className="text-lg font-black text-white">100 Active</div>
+            <div className="text-slate-400 text-[10px] font-bold uppercase">Rooms & Presets</div>
+            <div className="text-sm font-black text-emerald-400">✓ Unlimited</div>
           </div>
           <div className="bg-slate-950/60 border border-slate-800 p-3.5 rounded-2xl space-y-1">
-            <div className="text-slate-400 text-[10px] font-bold uppercase">Saved Teams</div>
-            <div className="text-lg font-black text-white">100 Presets</div>
+            <div className="text-slate-400 text-[10px] font-bold uppercase">Concurrent Displays</div>
+            <div className="text-sm font-black text-white">5 Displays</div>
           </div>
           <div className="bg-slate-950/60 border border-slate-800 p-3.5 rounded-2xl space-y-1">
-            <div className="text-slate-400 text-[10px] font-bold uppercase">Team Rosters</div>
-            <div className="text-lg font-black text-white">100 Rosters</div>
+            <div className="text-slate-400 text-[10px] font-bold uppercase">Controllers & Overlays</div>
+            <div className="text-sm font-black text-emerald-400">✓ Unlimited</div>
           </div>
           <div className="bg-slate-950/60 border border-slate-800 p-3.5 rounded-2xl space-y-1">
-            <div className="text-slate-400 text-[10px] font-bold uppercase">Admin Users</div>
-            <div className="text-lg font-black text-white">20 Admins</div>
+            <div className="text-slate-400 text-[10px] font-bold uppercase">Templates Access</div>
+            <div className="text-sm font-black text-purple-400">All Templates</div>
           </div>
           <div className="bg-slate-950/60 border border-slate-800 p-3.5 rounded-2xl space-y-1">
-            <div className="text-slate-400 text-[10px] font-bold uppercase">Guest Operators</div>
-            <div className="text-lg font-black text-emerald-400">Unlimited</div>
+            <div className="text-slate-400 text-[10px] font-bold uppercase">Leaderboards</div>
+            <div className="text-sm font-black text-amber-400">10 (25 Teams)</div>
           </div>
           <div className="bg-slate-950/60 border border-slate-800 p-3.5 rounded-2xl space-y-1">
-            <div className="text-slate-400 text-[10px] font-bold uppercase">Storage & API</div>
-            <div className="text-lg font-black text-purple-400">20 GB + API</div>
+            <div className="text-slate-400 text-[10px] font-bold uppercase">PIN Protection & Support</div>
+            <div className="text-sm font-black text-cyan-400">✓ Priority</div>
+          </div>
+        </div>
+
+        {/* Detailed Plan Checklist */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 pt-2 text-xs border-t border-purple-500/20 text-slate-300 font-medium">
+          <div className="flex items-center gap-2">
+            <span className="text-emerald-400 font-bold">✓</span> Unlimited rooms & presets
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="text-emerald-400 font-bold">✓</span> 5 concurrent live displays
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="text-emerald-400 font-bold">✓</span> Unlimited controllers & overlays
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="text-emerald-400 font-bold">✓</span> All templates & PIN protection
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="text-emerald-400 font-bold">✓</span> 10 leaderboards (up to 25 teams each)
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="text-emerald-400 font-bold">✓</span> Priority 24/7 SLA Support
           </div>
         </div>
       </div>
