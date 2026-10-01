@@ -78,16 +78,21 @@ export const UserDashboard: React.FC<Props> = ({ onOpenCreateMatch }) => {
         </div>
       </div>
 
-      {/* Matches List Header Bar */}
+      {/* Matches / Streams Filter Bar */}
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 bg-slate-900 border border-slate-800 p-6 rounded-3xl shadow-xl">
         <div>
-          <span className="text-xs font-bold text-blue-400 uppercase tracking-widest block mb-1">
-            Broadcast Control Center
-          </span>
-          <h2 className="text-2xl font-black text-white">Live Matches & Overlays</h2>
+          <div className="flex items-center gap-4 text-xs font-bold mb-1">
+            <span className="text-white text-sm font-black">Your Streams</span>
+            <div className="flex items-center gap-1 bg-slate-950 p-1 rounded-xl border border-slate-800 text-[11px]">
+              <span className="px-2.5 py-1 bg-blue-600 text-white rounded-lg cursor-pointer">All ({matches.length})</span>
+              <span className="px-2.5 py-1 text-slate-400 hover:text-white cursor-pointer">Live ({matches.filter(m => m.status === 'live').length})</span>
+              <span className="px-2.5 py-1 text-slate-400 hover:text-white cursor-pointer">Drafts (0)</span>
+              <span className="px-2.5 py-1 text-slate-400 hover:text-white cursor-pointer">Previous (0)</span>
+            </div>
+          </div>
         </div>
 
-        {/* Matches Select Dropdown & New Match CTA */}
+        {/* Matches Select Dropdown & New Stream CTA */}
         <div className="flex items-center gap-3 w-full md:w-auto">
           <select
             value={activeMatch?.id || ''}
@@ -106,9 +111,9 @@ export const UserDashboard: React.FC<Props> = ({ onOpenCreateMatch }) => {
 
           <button
             onClick={onOpenCreateMatch}
-            className="px-4 py-2.5 bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold rounded-xl shadow-lg shadow-blue-500/20 flex items-center gap-1.5 shrink-0"
+            className="px-5 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white text-xs font-black rounded-xl shadow-lg shadow-blue-500/20 flex items-center gap-1.5 shrink-0"
           >
-            <Plus className="w-4 h-4" /> New Match
+            <Plus className="w-4 h-4" /> New Stream
           </button>
         </div>
       </div>
