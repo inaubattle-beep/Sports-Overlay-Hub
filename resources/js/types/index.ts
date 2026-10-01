@@ -30,6 +30,15 @@ export interface Sport {
   icon: string;
 }
 
+export interface Player {
+  id: number;
+  team_id: number;
+  name: string;
+  jersey_number?: number;
+  position?: string;
+  is_starter: boolean;
+}
+
 export interface Team {
   id: number;
   name: string;
@@ -38,6 +47,7 @@ export interface Team {
   primary_color: string;
   secondary_color?: string;
   text_color?: string;
+  players?: Player[];
 }
 
 export interface ScoreboardTemplate {
@@ -69,6 +79,8 @@ export interface MatchState {
   current_elapsed_seconds?: number;
   timer_running: boolean;
   period?: string;
+  home_scorers?: string[];
+  away_scorers?: string[];
   home_yellow_cards?: number;
   away_yellow_cards?: number;
   home_red_cards?: number;
@@ -77,12 +89,14 @@ export interface MatchState {
   runs?: number;
   wickets?: number;
   overs?: number;
+  current_batsman?: string;
   // Volleyball
   home_sets?: number;
   away_sets?: number;
   home_points?: number;
   away_points?: number;
   current_set?: number;
+  active_server?: string;
 }
 
 export interface GameMatch {

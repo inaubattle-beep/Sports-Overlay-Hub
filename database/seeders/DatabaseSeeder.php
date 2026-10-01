@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\User;
 use App\Models\Sport;
 use App\Models\Team;
+use App\Models\Player;
 use App\Models\GameMatch;
 use App\Models\ScoreboardTemplate;
 use App\Models\Wallet;
@@ -37,7 +38,7 @@ class DatabaseSeeder extends Seeder
         ]);
         Wallet::create(['user_id' => $user->id, 'balance_coins' => 250]);
 
-        // 2. Sports
+        // 2. Sports (Multi-Sport Catalog)
         $football = Sport::create([
             'name' => 'Football / Soccer',
             'code' => 'football',
@@ -59,7 +60,21 @@ class DatabaseSeeder extends Seeder
             'is_active' => true,
         ]);
 
-        // 3. Teams
+        $basketball = Sport::create([
+            'name' => 'Basketball',
+            'code' => 'basketball',
+            'icon' => 'dribble',
+            'is_active' => true,
+        ]);
+
+        $tennis = Sport::create([
+            'name' => 'Tennis / Table Tennis',
+            'code' => 'tennis',
+            'icon' => 'circle',
+            'is_active' => true,
+        ]);
+
+        // 3. Teams & Player Rosters
         $dhaka = Team::create([
             'user_id' => $user->id,
             'name' => 'Dhaka',
@@ -68,6 +83,9 @@ class DatabaseSeeder extends Seeder
             'secondary_color' => '#1d4ed8',
             'text_color' => '#ffffff',
         ]);
+        Player::create(['team_id' => $dhaka->id, 'name' => 'Rahim', 'jersey_number' => 10, 'position' => 'Forward']);
+        Player::create(['team_id' => $dhaka->id, 'name' => 'Karim', 'jersey_number' => 7, 'position' => 'Midfielder']);
+        Player::create(['team_id' => $dhaka->id, 'name' => 'Sakib', 'jersey_number' => 75, 'position' => 'Captain']);
 
         $saver = Team::create([
             'user_id' => $user->id,
@@ -77,6 +95,9 @@ class DatabaseSeeder extends Seeder
             'secondary_color' => '#b91c1c',
             'text_color' => '#ffffff',
         ]);
+        Player::create(['team_id' => $saver->id, 'name' => 'John', 'jersey_number' => 9, 'position' => 'Forward']);
+        Player::create(['team_id' => $saver->id, 'name' => 'Hasan', 'jersey_number' => 11, 'position' => 'Winger']);
+        Player::create(['team_id' => $saver->id, 'name' => 'Tamim', 'jersey_number' => 28, 'position' => 'Defender']);
 
         $chittagong = Team::create([
             'user_id' => $user->id,
@@ -110,6 +131,19 @@ class DatabaseSeeder extends Seeder
             'is_active' => true,
         ]);
 
+        $footballMinimalTemplate = ScoreboardTemplate::create([
+            'sport_id' => $football->id,
+            'name' => 'Football Minimal Neon Banner',
+            'slug' => 'football-minimal',
+            'category' => 'Neon Cyber',
+            'aspect_ratio' => '16:9',
+            'default_width' => 900,
+            'default_height' => 200,
+            'is_premium' => false,
+            'price_coins' => 0,
+            'is_active' => true,
+        ]);
+
         $cricketTemplate = ScoreboardTemplate::create([
             'sport_id' => $cricket->id,
             'name' => 'Cricket Pro Overlay',
@@ -133,6 +167,19 @@ class DatabaseSeeder extends Seeder
             'default_height' => 200,
             'is_premium' => true,
             'price_coins' => 40,
+            'is_active' => true,
+        ]);
+
+        $basketballTemplate = ScoreboardTemplate::create([
+            'sport_id' => $basketball->id,
+            'name' => 'Basketball Shotclock Arena',
+            'slug' => 'basketball-pro',
+            'category' => 'NBA Arena',
+            'aspect_ratio' => '16:9',
+            'default_width' => 900,
+            'default_height' => 200,
+            'is_premium' => true,
+            'price_coins' => 60,
             'is_active' => true,
         ]);
 
@@ -176,6 +223,8 @@ class DatabaseSeeder extends Seeder
                 'sport' => 'football',
                 'home_score' => 2,
                 'away_score' => 1,
+                'home_scorers' => ["Rahim 34'", "Karim 67'"],
+                'away_scorers' => ["John 88'"],
                 'elapsed_seconds' => 911,
                 'timer_running' => true,
                 'started_at' => now()->subSeconds(911)->toIso8601String(),

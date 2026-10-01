@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\V1\WalletController;
 use App\Http\Controllers\Api\V1\TemplateController;
 use App\Http\Controllers\Api\V1\AdminController;
 use App\Http\Controllers\Api\V1\TeamController;
+use App\Http\Controllers\Api\V1\PlayerController;
 use App\Http\Controllers\Api\V1\ReportController;
 
 Route::prefix('v1')->middleware('throttle:60,1')->group(function () {
@@ -34,11 +35,14 @@ Route::prefix('v1')->middleware('throttle:60,1')->group(function () {
         Route::post('/matches/{match}/undo', [MatchController::class, 'undo']);
         Route::get('/matches/{match}/events', [MatchController::class, 'events']);
 
-        // Team Management
+        // Team & Player Roster Management
         Route::get('/teams', [TeamController::class, 'index']);
         Route::post('/teams', [TeamController::class, 'store']);
         Route::put('/teams/{team}', [TeamController::class, 'update']);
         Route::delete('/teams/{team}', [TeamController::class, 'destroy']);
+        Route::get('/teams/{team}/players', [PlayerController::class, 'index']);
+        Route::post('/teams/{team}/players', [PlayerController::class, 'store']);
+        Route::delete('/players/{player}', [PlayerController::class, 'destroy']);
 
         // Reports & Analytics
         Route::get('/reports/summary', [ReportController::class, 'summary']);

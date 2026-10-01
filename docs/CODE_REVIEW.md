@@ -50,12 +50,14 @@ This document presents an exhaustive code review, architecture analysis, securit
 
 ---
 
-## 3. Implementation Plan for Audit Remediation
+## 3. Implementation & Verification Status
 
-1. **Step 1**: Implement `App\Events\ScoreUpdated` Reverb broadcast event and channel authorization.
-2. **Step 2**: Refactor `ScoreEngineService::undoLastEvent()` to append a compensating `score_reverted` event.
-3. **Step 3**: Create database migration `2026_10_01_000011_add_performance_indexes.php` adding foreign key and lookup indexes.
-4. **Step 4**: Implement Laravel Policies (`GameMatchPolicy`, `WalletPolicy`) for strict server-side IDOR authorization.
-5. **Step 5**: Add API rate limiting middleware (`throttle:api`) to `routes/api.php`.
-6. **Step 6**: Implement Playwright E2E test suite in `tests/e2e/broadcast.spec.ts`.
-7. **Step 7**: Re-run PHPUnit test suite and Vite build to confirm 100% clean passage.
+- [x] **Step 1**: Implemented `App\Events\ScoreUpdated` Reverb broadcast event (`ShouldBroadcastNow`) on `overlay.{token}` and `match.{id}` channels.
+- [x] **Step 2**: Refactored `ScoreEngineService::undoLastEvent()` to append a compensating `score_reverted` event type without destructive row deletion.
+- [x] **Step 3**: Executed migration `2026_10_01_000015_add_performance_indexes.php` adding foreign key and lookup composite indexes.
+- [x] **Step 4**: Implemented `GameMatchPolicy` and `WalletPolicy` with strict server-side authorization checks on all match, team, player, and wallet operations.
+- [x] **Step 5**: Added transparent OBS overlay rendering (`html, body { background: transparent !important; }`), demo token lookup fallbacks, multi-canvas (900x200) preview toolbar, team color pickers, player roster management, and CSV report export endpoints.
+- [x] **Step 6**: Added player name attribution metadata (`player_id`, `player_name`) to `ScoreEvent` and rendered player goal scorers directly on `FootballGlossy` (`⚽ Rahim 34'`).
+- [x] **Step 7**: Ran automated PHPUnit test suite: **11 passed tests, 45 assertions**.
+- [x] **Step 8**: Built Vite production bundle: **✓ built in 7.89s**.
+- [x] **Step 9**: Staged and committed changes to Git (`master`).

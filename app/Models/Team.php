@@ -23,4 +23,9 @@ class Team extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function players()
+    {
+        return $this->hasMany(Player::class);
+    }
 }
