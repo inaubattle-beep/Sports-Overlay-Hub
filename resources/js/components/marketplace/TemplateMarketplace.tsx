@@ -77,8 +77,58 @@ export const TemplateMarketplace: React.FC<Props> = ({ onOpenWallet }) => {
           className="px-6 py-3 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black text-sm rounded-2xl shadow-xl shadow-amber-500/20 flex items-center gap-2 active:scale-95 transition"
         >
           <Coins className="w-5 h-5 text-slate-950" />
-          <span>Buy Coins</span>
+          <span>Buy Coins / Subscription</span>
         </button>
+      </div>
+
+      {/* Enterprise Pro Organization Plan Feature Banner */}
+      <div className="bg-gradient-to-r from-purple-950 via-slate-900 to-indigo-950 border border-purple-500/40 rounded-3xl p-8 shadow-2xl space-y-6">
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-b border-purple-500/20 pb-6">
+          <div>
+            <div className="inline-flex items-center gap-2 px-3 py-1 bg-purple-500/20 border border-purple-500/40 rounded-full text-[11px] font-bold text-purple-300 uppercase tracking-wider mb-2">
+              ⭐ Advanced Tier
+            </div>
+            <h3 className="text-2xl font-black text-white">Enterprise Organization Plan</h3>
+            <p className="text-slate-400 text-xs mt-1">Designed for larger sports organizations with advanced broadcasting needs.</p>
+          </div>
+          <div className="text-right">
+            <div className="text-3xl font-black text-white">$20 <span className="text-xs text-slate-400 font-normal">/month</span></div>
+            <div className="text-[11px] text-emerald-400 font-bold">Billed annually at $240 (Save 4 months)</div>
+            <button
+              onClick={onOpenWallet}
+              className="mt-3 px-5 py-2 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold text-xs rounded-xl shadow-lg transition"
+            >
+              Upgrade to Enterprise Pro
+            </button>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 text-xs">
+          <div className="bg-slate-950/60 border border-slate-800 p-3.5 rounded-2xl space-y-1">
+            <div className="text-slate-400 text-[10px] font-bold uppercase">Scoreboards</div>
+            <div className="text-lg font-black text-white">100 Active</div>
+          </div>
+          <div className="bg-slate-950/60 border border-slate-800 p-3.5 rounded-2xl space-y-1">
+            <div className="text-slate-400 text-[10px] font-bold uppercase">Saved Teams</div>
+            <div className="text-lg font-black text-white">100 Presets</div>
+          </div>
+          <div className="bg-slate-950/60 border border-slate-800 p-3.5 rounded-2xl space-y-1">
+            <div className="text-slate-400 text-[10px] font-bold uppercase">Team Rosters</div>
+            <div className="text-lg font-black text-white">100 Rosters</div>
+          </div>
+          <div className="bg-slate-950/60 border border-slate-800 p-3.5 rounded-2xl space-y-1">
+            <div className="text-slate-400 text-[10px] font-bold uppercase">Admin Users</div>
+            <div className="text-lg font-black text-white">20 Admins</div>
+          </div>
+          <div className="bg-slate-950/60 border border-slate-800 p-3.5 rounded-2xl space-y-1">
+            <div className="text-slate-400 text-[10px] font-bold uppercase">Guest Operators</div>
+            <div className="text-lg font-black text-emerald-400">Unlimited</div>
+          </div>
+          <div className="bg-slate-950/60 border border-slate-800 p-3.5 rounded-2xl space-y-1">
+            <div className="text-slate-400 text-[10px] font-bold uppercase">Storage & API</div>
+            <div className="text-lg font-black text-purple-400">20 GB + API</div>
+          </div>
+        </div>
       </div>
 
       {/* Grid */}

@@ -149,7 +149,7 @@ class DatabaseSeeder extends Seeder
             'coins' => 500,
             'bonus_coins' => 50,
             'price_usd' => 19.99,
-            'is_popular' => true,
+            'is_popular' => false,
         ]);
 
         CoinPackage::create([
@@ -158,6 +158,14 @@ class DatabaseSeeder extends Seeder
             'bonus_coins' => 200,
             'price_usd' => 39.99,
             'is_popular' => false,
+        ]);
+
+        CoinPackage::create([
+            'name' => 'Enterprise Pro Organization Tier',
+            'coins' => 5000,
+            'bonus_coins' => 1000,
+            'price_usd' => 20.00,
+            'is_popular' => true,
         ]);
 
         // 6. Demo Match (Dhaka 2 - 1 Saver | 911 seconds)
