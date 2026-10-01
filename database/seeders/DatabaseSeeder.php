@@ -39,75 +39,20 @@ class DatabaseSeeder extends Seeder
         Wallet::create(['user_id' => $user->id, 'balance_coins' => 250]);
 
         // 2. Sports (Multi-Sport Catalog)
-        $football = Sport::create([
-            'name' => 'Football / Soccer',
-            'code' => 'football',
-            'icon' => 'activity',
-            'is_active' => true,
-        ]);
-
-        $cricket = Sport::create([
-            'name' => 'Cricket',
-            'code' => 'cricket',
-            'icon' => 'trophy',
-            'is_active' => true,
-        ]);
-
-        $volleyball = Sport::create([
-            'name' => 'Volleyball & Badminton',
-            'code' => 'volleyball',
-            'icon' => 'target',
-            'is_active' => true,
-        ]);
-
-        $basketball = Sport::create([
-            'name' => 'Basketball',
-            'code' => 'basketball',
-            'icon' => 'dribble',
-            'is_active' => true,
-        ]);
-
-        $tennis = Sport::create([
-            'name' => 'Tennis / Table Tennis',
-            'code' => 'tennis',
-            'icon' => 'circle',
-            'is_active' => true,
-        ]);
-
-        $baseball = Sport::create([
-            'name' => 'Baseball & Softball',
-            'code' => 'baseball',
-            'icon' => 'activity',
-            'is_active' => true,
-        ]);
-
-        $hockey = Sport::create([
-            'name' => 'Hockey / Ice Hockey',
-            'code' => 'hockey',
-            'icon' => 'shield',
-            'is_active' => true,
-        ]);
-
-        $rugby = Sport::create([
-            'name' => 'Rugby Union & League',
-            'code' => 'rugby',
-            'icon' => 'trophy',
-            'is_active' => true,
-        ]);
-
-        $esports = Sport::create([
-            'name' => 'Esports & Gaming',
-            'code' => 'esports',
-            'icon' => 'gamepad',
-            'is_active' => true,
-        ]);
-
-        $universal = Sport::create([
-            'name' => 'Universal / Multi-Team / Ticker',
-            'code' => 'universal',
-            'icon' => 'activity',
-            'is_active' => true,
-        ]);
+        $americanFootball = Sport::create(['name' => 'American Football', 'code' => 'american_football', 'icon' => 'activity', 'is_active' => true]);
+        $badminton = Sport::create(['name' => 'Badminton', 'code' => 'badminton', 'icon' => 'target', 'is_active' => true]);
+        $basketball = Sport::create(['name' => 'Basketball', 'code' => 'basketball', 'icon' => 'dribble', 'is_active' => true]);
+        $cricket = Sport::create(['name' => 'Cricket', 'code' => 'cricket', 'icon' => 'trophy', 'is_active' => true]);
+        $darts = Sport::create(['name' => 'Darts', 'code' => 'darts', 'icon' => 'target', 'is_active' => true]);
+        $gaa = Sport::create(['name' => 'GAA (Gaelic Football & Hurling)', 'code' => 'gaa', 'icon' => 'shield', 'is_active' => true]);
+        $padel = Sport::create(['name' => 'Padel', 'code' => 'padel', 'icon' => 'circle', 'is_active' => true]);
+        $pickleball = Sport::create(['name' => 'Pickleball', 'code' => 'pickleball', 'icon' => 'circle', 'is_active' => true]);
+        $pingpong = Sport::create(['name' => 'PingPong (Table Tennis)', 'code' => 'pingpong', 'icon' => 'circle', 'is_active' => true]);
+        $pool = Sport::create(['name' => 'Pool & Billiards', 'code' => 'pool', 'icon' => 'circle', 'is_active' => true]);
+        $rugby = Sport::create(['name' => 'Rugby (Union & League)', 'code' => 'rugby', 'icon' => 'trophy', 'is_active' => true]);
+        $soccer = Sport::create(['name' => 'Soccer (Football)', 'code' => 'football', 'icon' => 'activity', 'is_active' => true]);
+        $tennis = Sport::create(['name' => 'Tennis', 'code' => 'tennis', 'icon' => 'circle', 'is_active' => true]);
+        $volleyball = Sport::create(['name' => 'Volleyball', 'code' => 'volleyball', 'icon' => 'target', 'is_active' => true]);
 
         // 3. Teams & Player Rosters
         $dhaka = Team::create([
@@ -154,23 +99,21 @@ class DatabaseSeeder extends Seeder
 
         // 4. Scoreboard Templates Catalog
         $templatesData = [
-            ['sport_id' => $football->id, 'name' => 'Football Glossy 3D Broadcast', 'slug' => 'football-glossy', 'category' => 'Broadcast Metallic', 'price_coins' => 0, 'is_premium' => false],
-            ['sport_id' => $football->id, 'name' => 'Soccer / Football Minimal Banner', 'slug' => 'football-minimal', 'category' => 'Neon Cyber', 'price_coins' => 0, 'is_premium' => false],
-            ['sport_id' => $football->id, 'name' => 'Futsal 5-a-Side Quick Score', 'slug' => 'futsal-pro', 'category' => 'Arena Fast', 'price_coins' => 30, 'is_premium' => true],
-            ['sport_id' => $cricket->id, 'name' => 'Cricket Pro Wickets & Overs', 'slug' => 'cricket-pro', 'category' => 'Pro League', 'price_coins' => 50, 'is_premium' => true],
-            ['sport_id' => $volleyball->id, 'name' => 'Volleyball Sets & Serves', 'slug' => 'volleyball-pro', 'category' => 'Tournament Gold', 'price_coins' => 40, 'is_premium' => true],
-            ['sport_id' => $volleyball->id, 'name' => 'Badminton Points & Serve Indicator', 'slug' => 'badminton-pro', 'category' => 'Racket Sports', 'price_coins' => 35, 'is_premium' => true],
+            ['sport_id' => $soccer->id, 'name' => 'Football Glossy 3D Broadcast', 'slug' => 'football-glossy', 'category' => 'Broadcast Metallic', 'price_coins' => 0, 'is_premium' => false],
+            ['sport_id' => $soccer->id, 'name' => 'Soccer Minimal Banner', 'slug' => 'football-minimal', 'category' => 'Neon Cyber', 'price_coins' => 0, 'is_premium' => false],
+            ['sport_id' => $americanFootball->id, 'name' => 'American Football Scores & Downs', 'slug' => 'american-football-pro', 'category' => 'NFL Arena', 'price_coins' => 50, 'is_premium' => true],
+            ['sport_id' => $badminton->id, 'name' => 'Badminton Sets & Serves', 'slug' => 'badminton-pro', 'category' => 'Racket Sports', 'price_coins' => 35, 'is_premium' => true],
             ['sport_id' => $basketball->id, 'name' => 'Basketball Shotclock Arena', 'slug' => 'basketball-pro', 'category' => 'NBA Arena', 'price_coins' => 60, 'is_premium' => true],
-            ['sport_id' => $tennis->id, 'name' => 'Tennis & Table Tennis Games', 'slug' => 'tennis-pro', 'category' => 'Grand Slam', 'price_coins' => 45, 'is_premium' => true],
-            ['sport_id' => $tennis->id, 'name' => 'Squash & Pickleball Pro', 'slug' => 'pickleball-pro', 'category' => 'Racket Sports', 'price_coins' => 35, 'is_premium' => true],
-            ['sport_id' => $baseball->id, 'name' => 'Baseball & Softball Inning Diamond', 'slug' => 'baseball-pro', 'category' => 'Major League', 'price_coins' => 50, 'is_premium' => true],
-            ['sport_id' => $hockey->id, 'name' => 'Ice Hockey Shots on Goal & Fouls', 'slug' => 'hockey-pro', 'category' => 'Ice Arena', 'price_coins' => 45, 'is_premium' => true],
+            ['sport_id' => $cricket->id, 'name' => 'Cricket Pro Wickets & Overs', 'slug' => 'cricket-pro', 'category' => 'Pro League', 'price_coins' => 50, 'is_premium' => true],
+            ['sport_id' => $darts->id, 'name' => 'Darts 501 Leg & Sets Scoreboard', 'slug' => 'darts-pro', 'category' => 'Pub Sports', 'price_coins' => 30, 'is_premium' => true],
+            ['sport_id' => $gaa->id, 'name' => 'GAA Goals & Points Scoreboard', 'slug' => 'gaa-pro', 'category' => 'Gaelic Sports', 'price_coins' => 40, 'is_premium' => true],
+            ['sport_id' => $padel->id, 'name' => 'Padel Pro Game & Set Scoreboard', 'slug' => 'padel-pro', 'category' => 'Racket Sports', 'price_coins' => 35, 'is_premium' => true],
+            ['sport_id' => $pickleball->id, 'name' => 'Pickleball Points & Serve Indicator', 'slug' => 'pickleball-pro', 'category' => 'Racket Sports', 'price_coins' => 35, 'is_premium' => true],
+            ['sport_id' => $pingpong->id, 'name' => 'PingPong Table Tennis Match Board', 'slug' => 'pingpong-pro', 'category' => 'Racket Sports', 'price_coins' => 30, 'is_premium' => true],
+            ['sport_id' => $pool->id, 'name' => 'Pool & Billiards Frame Counter', 'slug' => 'pool-pro', 'category' => 'Cue Sports', 'price_coins' => 25, 'is_premium' => true],
             ['sport_id' => $rugby->id, 'name' => 'Rugby Union & League Tries', 'slug' => 'rugby-pro', 'category' => 'Championship', 'price_coins' => 40, 'is_premium' => true],
-            ['sport_id' => $esports->id, 'name' => 'Esports Tournament Lower-Third', 'slug' => 'esports-pro', 'category' => 'Cyber Gaming', 'price_coins' => 50, 'is_premium' => true],
-            ['sport_id' => $universal->id, 'name' => 'Universal Generic Multi-Sport Board', 'slug' => 'universal-generic', 'category' => 'Universal', 'price_coins' => 0, 'is_premium' => false],
-            ['sport_id' => $universal->id, 'name' => 'Multi-Team Leaderboard (2-20 Teams)', 'slug' => 'multi-team', 'category' => 'Tournament', 'price_coins' => 60, 'is_premium' => true],
-            ['sport_id' => $universal->id, 'name' => 'Live Stream Countdown & Game Timer', 'slug' => 'timer-overlay', 'category' => 'Widgets', 'price_coins' => 20, 'is_premium' => false],
-            ['sport_id' => $universal->id, 'name' => 'OBS Lower-Third Live News Ticker', 'slug' => 'ticker-overlay', 'category' => 'Widgets', 'price_coins' => 25, 'is_premium' => false],
+            ['sport_id' => $tennis->id, 'name' => 'Tennis Grand Slam Match Board', 'slug' => 'tennis-pro', 'category' => 'Grand Slam', 'price_coins' => 45, 'is_premium' => true],
+            ['sport_id' => $volleyball->id, 'name' => 'Volleyball Sets & Points Scoreboard', 'slug' => 'volleyball-pro', 'category' => 'Tournament Gold', 'price_coins' => 40, 'is_premium' => true],
         ];
 
         $footballTemplate = null;
@@ -219,7 +162,7 @@ class DatabaseSeeder extends Seeder
 
         // 6. Demo Match (Dhaka 2 - 1 Saver | 911 seconds)
         $match = GameMatch::create([
-            'sport_id' => $football->id,
+            'sport_id' => $soccer->id,
             'user_id' => $user->id,
             'name' => 'Dhaka vs Saver Championship Final',
             'slug' => 'dhaka-vs-saver-final',
