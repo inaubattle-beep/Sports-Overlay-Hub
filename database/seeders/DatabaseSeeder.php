@@ -74,6 +74,41 @@ class DatabaseSeeder extends Seeder
             'is_active' => true,
         ]);
 
+        $baseball = Sport::create([
+            'name' => 'Baseball & Softball',
+            'code' => 'baseball',
+            'icon' => 'activity',
+            'is_active' => true,
+        ]);
+
+        $hockey = Sport::create([
+            'name' => 'Hockey / Ice Hockey',
+            'code' => 'hockey',
+            'icon' => 'shield',
+            'is_active' => true,
+        ]);
+
+        $rugby = Sport::create([
+            'name' => 'Rugby Union & League',
+            'code' => 'rugby',
+            'icon' => 'trophy',
+            'is_active' => true,
+        ]);
+
+        $esports = Sport::create([
+            'name' => 'Esports & Gaming',
+            'code' => 'esports',
+            'icon' => 'gamepad',
+            'is_active' => true,
+        ]);
+
+        $universal = Sport::create([
+            'name' => 'Universal / Multi-Team / Ticker',
+            'code' => 'universal',
+            'icon' => 'activity',
+            'is_active' => true,
+        ]);
+
         // 3. Teams & Player Rosters
         $dhaka = Team::create([
             'user_id' => $user->id,
@@ -117,71 +152,45 @@ class DatabaseSeeder extends Seeder
             'text_color' => '#ffffff',
         ]);
 
-        // 4. Scoreboard Templates
-        $footballTemplate = ScoreboardTemplate::create([
-            'sport_id' => $football->id,
-            'name' => 'Football Glossy 3D Broadcast',
-            'slug' => 'football-glossy',
-            'category' => 'Broadcast Metallic',
-            'aspect_ratio' => '16:9',
-            'default_width' => 900,
-            'default_height' => 200,
-            'is_premium' => false,
-            'price_coins' => 0,
-            'is_active' => true,
-        ]);
+        // 4. Scoreboard Templates Catalog
+        $templatesData = [
+            ['sport_id' => $football->id, 'name' => 'Football Glossy 3D Broadcast', 'slug' => 'football-glossy', 'category' => 'Broadcast Metallic', 'price_coins' => 0, 'is_premium' => false],
+            ['sport_id' => $football->id, 'name' => 'Soccer / Football Minimal Banner', 'slug' => 'football-minimal', 'category' => 'Neon Cyber', 'price_coins' => 0, 'is_premium' => false],
+            ['sport_id' => $football->id, 'name' => 'Futsal 5-a-Side Quick Score', 'slug' => 'futsal-pro', 'category' => 'Arena Fast', 'price_coins' => 30, 'is_premium' => true],
+            ['sport_id' => $cricket->id, 'name' => 'Cricket Pro Wickets & Overs', 'slug' => 'cricket-pro', 'category' => 'Pro League', 'price_coins' => 50, 'is_premium' => true],
+            ['sport_id' => $volleyball->id, 'name' => 'Volleyball Sets & Serves', 'slug' => 'volleyball-pro', 'category' => 'Tournament Gold', 'price_coins' => 40, 'is_premium' => true],
+            ['sport_id' => $volleyball->id, 'name' => 'Badminton Points & Serve Indicator', 'slug' => 'badminton-pro', 'category' => 'Racket Sports', 'price_coins' => 35, 'is_premium' => true],
+            ['sport_id' => $basketball->id, 'name' => 'Basketball Shotclock Arena', 'slug' => 'basketball-pro', 'category' => 'NBA Arena', 'price_coins' => 60, 'is_premium' => true],
+            ['sport_id' => $tennis->id, 'name' => 'Tennis & Table Tennis Games', 'slug' => 'tennis-pro', 'category' => 'Grand Slam', 'price_coins' => 45, 'is_premium' => true],
+            ['sport_id' => $tennis->id, 'name' => 'Squash & Pickleball Pro', 'slug' => 'pickleball-pro', 'category' => 'Racket Sports', 'price_coins' => 35, 'is_premium' => true],
+            ['sport_id' => $baseball->id, 'name' => 'Baseball & Softball Inning Diamond', 'slug' => 'baseball-pro', 'category' => 'Major League', 'price_coins' => 50, 'is_premium' => true],
+            ['sport_id' => $hockey->id, 'name' => 'Ice Hockey Shots on Goal & Fouls', 'slug' => 'hockey-pro', 'category' => 'Ice Arena', 'price_coins' => 45, 'is_premium' => true],
+            ['sport_id' => $rugby->id, 'name' => 'Rugby Union & League Tries', 'slug' => 'rugby-pro', 'category' => 'Championship', 'price_coins' => 40, 'is_premium' => true],
+            ['sport_id' => $esports->id, 'name' => 'Esports Tournament Lower-Third', 'slug' => 'esports-pro', 'category' => 'Cyber Gaming', 'price_coins' => 50, 'is_premium' => true],
+            ['sport_id' => $universal->id, 'name' => 'Universal Generic Multi-Sport Board', 'slug' => 'universal-generic', 'category' => 'Universal', 'price_coins' => 0, 'is_premium' => false],
+            ['sport_id' => $universal->id, 'name' => 'Multi-Team Leaderboard (2-20 Teams)', 'slug' => 'multi-team', 'category' => 'Tournament', 'price_coins' => 60, 'is_premium' => true],
+            ['sport_id' => $universal->id, 'name' => 'Live Stream Countdown & Game Timer', 'slug' => 'timer-overlay', 'category' => 'Widgets', 'price_coins' => 20, 'is_premium' => false],
+            ['sport_id' => $universal->id, 'name' => 'OBS Lower-Third Live News Ticker', 'slug' => 'ticker-overlay', 'category' => 'Widgets', 'price_coins' => 25, 'is_premium' => false],
+        ];
 
-        $footballMinimalTemplate = ScoreboardTemplate::create([
-            'sport_id' => $football->id,
-            'name' => 'Football Minimal Neon Banner',
-            'slug' => 'football-minimal',
-            'category' => 'Neon Cyber',
-            'aspect_ratio' => '16:9',
-            'default_width' => 900,
-            'default_height' => 200,
-            'is_premium' => false,
-            'price_coins' => 0,
-            'is_active' => true,
-        ]);
-
-        $cricketTemplate = ScoreboardTemplate::create([
-            'sport_id' => $cricket->id,
-            'name' => 'Cricket Pro Overlay',
-            'slug' => 'cricket-pro',
-            'category' => 'Pro League',
-            'aspect_ratio' => '16:9',
-            'default_width' => 900,
-            'default_height' => 200,
-            'is_premium' => true,
-            'price_coins' => 50,
-            'is_active' => true,
-        ]);
-
-        $volleyballTemplate = ScoreboardTemplate::create([
-            'sport_id' => $volleyball->id,
-            'name' => 'Volleyball Pro Set Score',
-            'slug' => 'volleyball-pro',
-            'category' => 'Tournament Gold',
-            'aspect_ratio' => '16:9',
-            'default_width' => 900,
-            'default_height' => 200,
-            'is_premium' => true,
-            'price_coins' => 40,
-            'is_active' => true,
-        ]);
-
-        $basketballTemplate = ScoreboardTemplate::create([
-            'sport_id' => $basketball->id,
-            'name' => 'Basketball Shotclock Arena',
-            'slug' => 'basketball-pro',
-            'category' => 'NBA Arena',
-            'aspect_ratio' => '16:9',
-            'default_width' => 900,
-            'default_height' => 200,
-            'is_premium' => true,
-            'price_coins' => 60,
-            'is_active' => true,
-        ]);
+        $footballTemplate = null;
+        foreach ($templatesData as $tData) {
+            $tpl = ScoreboardTemplate::create([
+                'sport_id' => $tData['sport_id'],
+                'name' => $tData['name'],
+                'slug' => $tData['slug'],
+                'category' => $tData['category'],
+                'aspect_ratio' => '16:9',
+                'default_width' => 900,
+                'default_height' => 200,
+                'is_premium' => $tData['is_premium'],
+                'price_coins' => $tData['price_coins'],
+                'is_active' => true,
+            ]);
+            if ($tData['slug'] === 'football-glossy') {
+                $footballTemplate = $tpl;
+            }
+        }
 
         // 5. Coin Packages
         CoinPackage::create([
