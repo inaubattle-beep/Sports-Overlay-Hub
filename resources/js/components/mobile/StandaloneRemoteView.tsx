@@ -15,11 +15,15 @@ export const StandaloneRemoteView: React.FC<Props> = ({ token }) => {
   const [isGuideOpen, setIsGuideOpen] = useState(false);
   const [statusNotice, setStatusNotice] = useState<string | null>(null);
 
+  const cleanToken = token ? token.split('?')[0].replace(/\/$/, '') : 'abc123demo';
+
   const fetchState = async () => {
     try {
-      const res = await axios.get(`/api/v1/overlay/${token}/state`);
-      setMatch(res.data.match);
-      setError(null);
+      const res = await axios.get(`/api/v1/overlay/${cleanToken}/state`);
+      if (res.data?.match) {
+        setMatch(res.data.match);
+        setError(null);
+      }
     } catch (err: any) {
       setError(err.response?.data?.message || 'Remote session expired or invalid token');
     }
@@ -29,20 +33,20 @@ export const StandaloneRemoteView: React.FC<Props> = ({ token }) => {
     fetchState();
     const interval = setInterval(fetchState, 1500);
     return () => clearInterval(interval);
-  }, [token]);
+  }, [cleanToken]);
 
   const handleRemoteScore = async (eventType: string, teamId?: number, value: number = 1, playerName?: string) => {
     try {
-      const res = await axios.post(`/api/v1/remote/${token}/score`, {
+      const res = await axios.post(`/api/v1/remote/${cleanToken}/score`, {
         event_type: eventType,
         team_id: teamId,
         value: value,
         player_name: playerName,
       });
-      if (res.data.data) {
+      if (res.data?.data) {
         setMatch(res.data.data);
       }
-      setStatusNotice('Score updated!');
+      setStatusNotice('Score updated live!');
       setTimeout(() => setStatusNotice(null), 1500);
     } catch (err: any) {
       alert('Failed to send score update: ' + (err.response?.data?.message || err.message));
@@ -51,8 +55,8 @@ export const StandaloneRemoteView: React.FC<Props> = ({ token }) => {
 
   const handleRemoteUndo = async () => {
     try {
-      const res = await axios.post(`/api/v1/remote/${token}/undo`);
-      if (res.data.data) {
+      const res = await axios.post(`/api/v1/remote/${cleanToken}/undo`);
+      if (res.data?.data) {
         setMatch(res.data.data);
       }
       setStatusNotice('Action undone!');
@@ -85,7 +89,7 @@ export const StandaloneRemoteView: React.FC<Props> = ({ token }) => {
   if (!match) {
     return (
       <div className="min-h-screen bg-[#0b0f19] flex items-center justify-center p-6 text-slate-400 text-xs font-mono">
-        Connecting to live broadcast stream #{token}...
+        Connecting to live broadcast stream #{cleanToken}...
       </div>
     );
   }
@@ -104,7 +108,7 @@ export const StandaloneRemoteView: React.FC<Props> = ({ token }) => {
             <h1 className="text-xs font-black text-white flex items-center gap-1.5">
               Browser Remote Controller <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
             </h1>
-            <p className="text-[10px] text-slate-400 font-mono">Live Pair Token: #{token}</p>
+            <p className="text-[10px] text-slate-400 font-mono">Live Pair Token: #{cleanToken}</p>
           </div>
         </div>
 
@@ -117,7 +121,7 @@ export const StandaloneRemoteView: React.FC<Props> = ({ token }) => {
             <HelpCircle className="w-4 h-4" />
           </button>
           <a
-            href={`/overlay/${token}`}
+            href={`/overlay/${cleanToken}`}
             target="_blank"
             rel="noreferrer"
             className="p-2 bg-slate-800 hover:bg-slate-700 text-amber-400 rounded-xl transition border border-slate-700 shadow flex items-center gap-1 text-[11px] font-bold"

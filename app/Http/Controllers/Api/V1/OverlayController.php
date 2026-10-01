@@ -30,14 +30,8 @@ class OverlayController extends Controller
         return GameMatch::with(['sport', 'homeTeam', 'awayTeam', 'template', 'broadcastOutputs'])->find($broadcast->match_id);
     }
 
-    public function getStateByToken(string $token)
+    private function formatMatchPayload(GameMatch $match, string $token): array
     {
-        $match = $this->getMatchByToken($token);
-
-        if (!$match) {
-            return response()->json(['status' => 'error', 'message' => 'No active match found'], 404);
-        }
-
         $state = $match->current_state ?? [];
         
         // Calculate live display timer client offset
@@ -47,39 +41,62 @@ class OverlayController extends Controller
         }
         $state['current_elapsed_seconds'] = $elapsedSeconds;
 
+        $homeTeamData = [
+            'id' => $match->home_team_id,
+            'name' => $match->homeTeam->name ?? 'HOME',
+            'short_name' => $match->homeTeam->short_name ?? 'HOM',
+            'primary_color' => $match->homeTeam->primary_color ?? '#2563eb',
+            'color' => $match->homeTeam->primary_color ?? '#2563eb',
+        ];
+
+        $awayTeamData = [
+            'id' => $match->away_team_id,
+            'name' => $match->awayTeam->name ?? 'AWAY',
+            'short_name' => $match->awayTeam->short_name ?? 'AWY',
+            'primary_color' => $match->awayTeam->primary_color ?? '#dc2626',
+            'color' => $match->awayTeam->primary_color ?? '#dc2626',
+        ];
+
+        $templateData = [
+            'id' => $match->template->id ?? 1,
+            'slug' => $match->template->slug ?? 'football-glossy',
+            'name' => $match->template->name ?? 'Football Glossy',
+        ];
+
+        return [
+            'id' => $match->id,
+            'name' => $match->name,
+            'slug' => $match->slug,
+            'status' => $match->status,
+            'sport' => [
+                'id' => $match->sport->id ?? 1,
+                'code' => $match->sport->code ?? 'football',
+                'name' => $match->sport->name ?? 'Football',
+            ],
+            'homeTeam' => $homeTeamData,
+            'home_team' => $homeTeamData,
+            'awayTeam' => $awayTeamData,
+            'away_team' => $awayTeamData,
+            'template' => $templateData,
+            'broadcastOutputs' => $match->broadcastOutputs,
+            'broadcast_outputs' => $match->broadcastOutputs,
+            'current_state' => $state,
+            'state' => $state,
+        ];
+    }
+
+    public function getStateByToken(string $token)
+    {
+        $match = $this->getMatchByToken($token);
+
+        if (!$match) {
+            return response()->json(['status' => 'error', 'message' => 'No active match found'], 404);
+        }
+
         return response()->json([
             'status' => 'success',
             'token' => $token,
-            'match' => [
-                'id' => $match->id,
-                'name' => $match->name,
-                'slug' => $match->slug,
-                'status' => $match->status,
-                'sport' => [
-                    'id' => $match->sport->id ?? 1,
-                    'code' => $match->sport->code ?? 'football',
-                    'name' => $match->sport->name ?? 'Football',
-                ],
-                'homeTeam' => [
-                    'id' => $match->home_team_id,
-                    'name' => $match->homeTeam->name ?? 'HOME',
-                    'short_name' => $match->homeTeam->short_name ?? 'HOM',
-                    'color' => $match->homeTeam->primary_color ?? '#2563eb',
-                ],
-                'awayTeam' => [
-                    'id' => $match->away_team_id,
-                    'name' => $match->awayTeam->name ?? 'AWAY',
-                    'short_name' => $match->awayTeam->short_name ?? 'AWY',
-                    'color' => $match->awayTeam->primary_color ?? '#dc2626',
-                ],
-                'template' => [
-                    'slug' => $match->template->slug ?? 'football-glossy',
-                    'name' => $match->template->name ?? 'Football Glossy',
-                ],
-                'broadcastOutputs' => $match->broadcastOutputs,
-                'current_state' => $state,
-                'state' => $state,
-            ],
+            'match' => $this->formatMatchPayload($match, $token),
         ]);
     }
 
@@ -109,7 +126,7 @@ class OverlayController extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'Score updated remotely',
-            'data' => $updatedMatch,
+            'data' => $this->formatMatchPayload($updatedMatch, $token),
         ]);
     }
 
@@ -126,7 +143,7 @@ class OverlayController extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'Last action undone remotely',
-            'data' => $updatedMatch,
+            'data' => $this->formatMatchPayload($updatedMatch, $token),
         ]);
     }
 }
