@@ -102,6 +102,42 @@ export const AuthModal: React.FC<Props> = ({ isOpen, onClose }) => {
             {isLoading ? 'Processing...' : isLogin ? 'Sign In' : 'Register Account'}
           </button>
 
+          {/* Quick Login Presets / Default Credentials Notice */}
+          <div className="bg-slate-950 border border-slate-800 rounded-2xl p-3 space-y-2 text-[11px] text-slate-400">
+            <div className="flex items-center justify-between text-slate-300 font-bold border-b border-slate-800/80 pb-1">
+              <span>🔑 Default Demo Credentials</span>
+              <span className="text-[10px] text-blue-400 font-mono">Click to Auto-fill</span>
+            </div>
+
+            <div className="grid grid-cols-2 gap-2">
+              <button
+                type="button"
+                onClick={() => {
+                  setEmail('admin@sportsoverlay.com');
+                  setPassword('password');
+                }}
+                className="bg-purple-950/40 border border-purple-500/30 hover:bg-purple-900/50 p-2 rounded-xl text-left transition"
+              >
+                <div className="font-bold text-purple-300 text-[10px] uppercase">Super Admin</div>
+                <div className="text-slate-300 truncate font-mono text-[10px]">admin@sportsoverlay.com</div>
+                <div className="text-slate-500 font-mono text-[9px]">Pass: password</div>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  setEmail('user@sportsoverlay.com');
+                  setPassword('password');
+                }}
+                className="bg-blue-950/40 border border-blue-500/30 hover:bg-blue-900/50 p-2 rounded-xl text-left transition"
+              >
+                <div className="font-bold text-blue-300 text-[10px] uppercase">Broadcaster User</div>
+                <div className="text-slate-300 truncate font-mono text-[10px]">user@sportsoverlay.com</div>
+                <div className="text-slate-500 font-mono text-[9px]">Pass: password</div>
+              </button>
+            </div>
+          </div>
+
           <div className="text-center pt-2">
             <button
               type="button"

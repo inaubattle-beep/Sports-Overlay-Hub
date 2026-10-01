@@ -59,5 +59,6 @@ Route::prefix('v1')->middleware('throttle:60,1')->group(function () {
         Route::get('/admin/stats', [AdminController::class, 'stats']);
         Route::get('/admin/users', [AdminController::class, 'users']);
         Route::put('/admin/users/{user}', [AdminController::class, 'updateRole']);
+        Route::post('/admin/users/{user}/coins', [AdminController::class, 'adjustCoins']);
     });
 });
