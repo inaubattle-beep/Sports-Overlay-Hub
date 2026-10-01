@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useMatchStore } from '../../stores/useMatchStore';
 import { ScoreboardRenderer } from '../../scoreboards/ScoreboardRenderer';
 import { MobileRemoteController } from '../mobile/MobileRemoteController';
-import { Copy, ExternalLink, Tv, Radio, Plus, Smartphone, Monitor, LayoutTemplate } from 'lucide-react';
+import { ScoreboardControlsGuideModal } from './ScoreboardControlsGuideModal';
+import { Copy, ExternalLink, Tv, Radio, Plus, Smartphone, Monitor, LayoutTemplate, BookOpen } from 'lucide-react';
 
 interface Props {
   onOpenCreateMatch: () => void;
@@ -13,6 +14,7 @@ export const UserDashboard: React.FC<Props> = ({ onOpenCreateMatch }) => {
   const [copiedToken, setCopiedToken] = useState(false);
   const [viewMode, setViewMode] = useState<'desktop' | 'mobile'>('desktop');
   const [selectedTemplateSlug, setSelectedTemplateSlug] = useState<string>('football-glossy');
+  const [isGuideOpen, setIsGuideOpen] = useState(false);
 
   useEffect(() => {
     fetchMatches();
@@ -37,6 +39,9 @@ export const UserDashboard: React.FC<Props> = ({ onOpenCreateMatch }) => {
 
   return (
     <div className="max-w-7xl mx-auto p-6 space-y-8">
+      {/* Scoreboard Controls Guide Modal */}
+      <ScoreboardControlsGuideModal isOpen={isGuideOpen} onClose={() => setIsGuideOpen(false)} />
+
       {/* Hero Value Banner */}
       <div className="bg-gradient-to-r from-blue-950 via-slate-900 to-indigo-950 border border-blue-500/30 rounded-3xl p-6 md:p-8 shadow-2xl space-y-4">
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
@@ -49,12 +54,20 @@ export const UserDashboard: React.FC<Props> = ({ onOpenCreateMatch }) => {
               Create stunning, real-time scoreboard overlays for livestreaming and venue displays. Works perfectly with OBS Studio, Streamlabs, vMix, PRISM Live Studio, and more.
             </p>
           </div>
-          <button
-            onClick={onOpenCreateMatch}
-            className="px-6 py-3.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-black text-xs rounded-2xl shadow-xl shadow-blue-500/25 flex items-center gap-2 active:scale-95 transition shrink-0"
-          >
-            <Plus className="w-4 h-4" /> Start Live Scoreboard
-          </button>
+          <div className="flex items-center gap-3 shrink-0">
+            <button
+              onClick={() => setIsGuideOpen(true)}
+              className="px-4 py-3.5 bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-700 font-bold text-xs rounded-2xl shadow-lg flex items-center gap-2 transition"
+            >
+              <BookOpen className="w-4 h-4 text-blue-400" /> How to Operate Controls
+            </button>
+            <button
+              onClick={onOpenCreateMatch}
+              className="px-6 py-3.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-black text-xs rounded-2xl shadow-xl shadow-blue-500/25 flex items-center gap-2 active:scale-95 transition"
+            >
+              <Plus className="w-4 h-4" /> Start Live Scoreboard
+            </button>
+          </div>
         </div>
 
         {/* Feature Pill Highlights */}
@@ -220,6 +233,7 @@ export const UserDashboard: React.FC<Props> = ({ onOpenCreateMatch }) => {
               match={activeMatch}
               onScore={(evt, teamId, val, player) => sendScoreEvent(evt, teamId, val, player)}
               onUndo={undoLastEvent}
+              onOpenGuide={() => setIsGuideOpen(true)}
             />
           </div>
         </div>

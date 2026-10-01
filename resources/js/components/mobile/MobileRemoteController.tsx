@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
 import { GameMatch } from '../../types';
-import { Play, Pause, RotateCcw, Undo2, Zap, AlertTriangle, User, Lock, Unlock, QrCode } from 'lucide-react';
+import { Play, Pause, RotateCcw, Undo2, Zap, AlertTriangle, User, Lock, Unlock, QrCode, HelpCircle } from 'lucide-react';
 
 interface Props {
   match: GameMatch;
   onScore: (eventType: string, teamId?: number, value?: number, playerName?: string) => void;
   onUndo: () => void;
+  onOpenGuide?: () => void;
 }
 
-export const MobileRemoteController: React.FC<Props> = ({ match, onScore, onUndo }) => {
+export const MobileRemoteController: React.FC<Props> = ({ match, onScore, onUndo, onOpenGuide }) => {
   const [playerName, setPlayerName] = useState('');
   const [pinInput, setPinInput] = useState('');
   const [isLocked, setIsLocked] = useState(false);
@@ -74,6 +75,15 @@ export const MobileRemoteController: React.FC<Props> = ({ match, onScore, onUndo
         </div>
 
         <div className="flex items-center gap-1.5">
+          {onOpenGuide && (
+            <button
+              onClick={onOpenGuide}
+              className="p-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl transition border border-slate-700 shadow"
+              title="How to Operate Scoreboard Controls"
+            >
+              <HelpCircle className="w-4 h-4 text-blue-400" />
+            </button>
+          )}
           <button
             onClick={() => setShowQr(!showQr)}
             className="p-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl transition border border-slate-700 shadow"
