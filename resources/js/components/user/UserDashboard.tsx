@@ -42,11 +42,11 @@ export const UserDashboard: React.FC<Props> = ({ onOpenCreateMatch }) => {
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
           <div>
             <span className="inline-block px-3 py-1 bg-blue-500/20 border border-blue-500/40 rounded-full text-[11px] font-bold text-blue-300 uppercase tracking-widest mb-2">
-              ⚡ Instant Scoreboard Setup
+              ✨ Live Scoreboards Made Beautiful
             </span>
-            <h1 className="text-2xl md:text-3xl font-black text-white">Create a Live Scoreboard in Seconds</h1>
+            <h1 className="text-2xl md:text-3xl font-black text-white">Create Stunning, Real-Time Scoreboard Overlays</h1>
             <p className="text-slate-400 text-xs md:text-sm max-w-2xl mt-1">
-              Customize the display, share one link, and run the match from any phone, tablet, or laptop — no download, no hardware needed.
+              Create stunning, real-time scoreboard overlays for livestreaming and venue displays. Works perfectly with OBS Studio, Streamlabs, vMix, PRISM Live Studio, and more.
             </p>
           </div>
           <button
@@ -209,7 +209,7 @@ export const UserDashboard: React.FC<Props> = ({ onOpenCreateMatch }) => {
                 </button>
               </div>
               <p className="text-[11px] text-slate-500">
-                Paste this link into OBS Studio as a <span className="text-slate-300 font-bold">Browser Source</span> (Width: 900, Height: 200). Background is 100% transparent.
+                Paste this link as a <span className="text-slate-300 font-bold">Browser Source</span> (Width: 900, Height: 200) in <span className="text-amber-400 font-bold">OBS Studio, Streamlabs, vMix, PRISM Live Studio</span>, or venue displays. Background is 100% transparent.
               </p>
             </div>
           </div>
