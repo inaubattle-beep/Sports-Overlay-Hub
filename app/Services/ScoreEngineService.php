@@ -129,12 +129,17 @@ class ScoreEngineService
         $playerName = $metadata['player_name'] ?? null;
 
         switch ($sportCode) {
+            case 'gaa':
+                return $this->handleGAAEvent($state, $eventType, $isHome, $value, $playerName);
             case 'cricket':
                 return $this->handleCricketEvent($state, $eventType, $isHome, $value, $playerName);
             case 'volleyball':
                 return $this->handleVolleyballEvent($state, $eventType, $isHome, $value, $playerName);
             case 'football':
             default:
+                if (str_contains($eventType, 'gaa')) {
+                    return $this->handleGAAEvent($state, $eventType, $isHome, $value, $playerName);
+                }
                 return $this->handleFootballEvent($state, $eventType, $isHome, $value, $playerName);
         }
     }
@@ -270,6 +275,31 @@ class ScoreEngineService
                 $state['home_points'] = 0;
                 $state['away_points'] = 0;
                 $state['current_set'] += 1;
+                break;
+        }
+
+        return $state;
+    }
+
+    private function handleGAAEvent(array $state, string $eventType, bool $isHome, int $value, ?string $playerName): array
+    {
+        $state['home_goals'] = $state['home_goals'] ?? 2;
+        $state['home_points'] = $state['home_points'] ?? 10;
+        $state['away_goals'] = $state['away_goals'] ?? 1;
+        $state['away_points'] = $state['away_points'] ?? 14;
+
+        switch ($eventType) {
+            case 'gaa_home_goal':
+                $state['home_goals'] += 1;
+                break;
+            case 'gaa_home_point':
+                $state['home_points'] += 1;
+                break;
+            case 'gaa_away_goal':
+                $state['away_goals'] += 1;
+                break;
+            case 'gaa_away_point':
+                $state['away_points'] += 1;
                 break;
         }
 

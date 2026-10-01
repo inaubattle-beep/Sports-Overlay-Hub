@@ -148,6 +148,55 @@ export const MobileRemoteController: React.FC<Props> = ({ match, onScore, onUndo
         />
       </div>
 
+      {/* GAA Gaelic Football / Hurling Controller */}
+      {(sport === 'gaa' || match.template?.slug?.includes('gaa')) && (
+        <div className="space-y-4">
+          <div className="grid grid-cols-2 gap-3">
+            {/* Home Goals + Points */}
+            <div className="space-y-2 bg-emerald-950/40 p-3 rounded-2xl border border-emerald-500/30">
+              <div className="text-xs font-black text-amber-300 text-center uppercase">{homeName}</div>
+              <div className="grid grid-cols-2 gap-2">
+                <button
+                  onClick={() => handleAction('gaa_home_goal', homeId, 1)}
+                  className="py-4 bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs rounded-xl shadow active:scale-95 flex flex-col items-center"
+                >
+                  <span className="text-[10px] text-emerald-200">⚽ GOAL</span>
+                  <span>+1 (3pts)</span>
+                </button>
+                <button
+                  onClick={() => handleAction('gaa_home_point', homeId, 1)}
+                  className="py-4 bg-amber-600 hover:bg-amber-500 text-white font-black text-xs rounded-xl shadow active:scale-95 flex flex-col items-center"
+                >
+                  <span className="text-[10px] text-amber-200">☝ POINT</span>
+                  <span>+1 (1pt)</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Away Goals + Points */}
+            <div className="space-y-2 bg-emerald-950/40 p-3 rounded-2xl border border-emerald-500/30">
+              <div className="text-xs font-black text-amber-300 text-center uppercase">{awayName}</div>
+              <div className="grid grid-cols-2 gap-2">
+                <button
+                  onClick={() => handleAction('gaa_away_goal', awayId, 1)}
+                  className="py-4 bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs rounded-xl shadow active:scale-95 flex flex-col items-center"
+                >
+                  <span className="text-[10px] text-emerald-200">⚽ GOAL</span>
+                  <span>+1 (3pts)</span>
+                </button>
+                <button
+                  onClick={() => handleAction('gaa_away_point', awayId, 1)}
+                  className="py-4 bg-amber-600 hover:bg-amber-500 text-white font-black text-xs rounded-xl shadow active:scale-95 flex flex-col items-center"
+                >
+                  <span className="text-[10px] text-amber-200">☝ POINT</span>
+                  <span>+1 (1pt)</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Main Scoring Buttons */}
       {sport === 'football' && (
         <div className="space-y-4">

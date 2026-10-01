@@ -29,6 +29,7 @@ export const UserDashboard: React.FC<Props> = ({ onOpenCreateMatch }) => {
 
   const canvasOptions = [
     { slug: 'football-glossy', label: 'Football Glossy 3D' },
+    { slug: 'gaa-pro', label: '☘️ GAA Goals & Points (2-10)' },
     { slug: 'football-minimal', label: 'Football Minimal Neon' },
     { slug: 'cricket-pro', label: 'Cricket Pro League' },
     { slug: 'volleyball-pro', label: 'Volleyball Set Score' },
