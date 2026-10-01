@@ -1,0 +1,176 @@
+import React, { useState } from 'react';
+import { GameMatch } from '../../types';
+import { Play, Pause, RotateCcw, Undo2, Zap, AlertTriangle, User } from 'lucide-react';
+
+interface Props {
+  match: GameMatch;
+  onScore: (eventType: string, teamId?: number, value?: number, playerName?: string) => void;
+  onUndo: () => void;
+}
+
+export const MobileRemoteController: React.FC<Props> = ({ match, onScore, onUndo }) => {
+  const [playerName, setPlayerName] = useState('');
+
+  const triggerHaptic = () => {
+    if (navigator.vibrate) {
+      navigator.vibrate(40);
+    }
+  };
+
+  const handleAction = (eventType: string, teamId?: number, value: number = 1) => {
+    triggerHaptic();
+    onScore(eventType, teamId, value, playerName);
+    setPlayerName(''); // Reset input after scoring
+  };
+
+  const handleUndo = () => {
+    triggerHaptic();
+    onUndo();
+  };
+
+  const sport = match.sport?.code || 'football';
+  const homeName = match.homeTeam?.name || 'Home';
+  const awayName = match.awayTeam?.name || 'Away';
+  const homeId = match.homeTeam?.id;
+  const awayId = match.awayTeam?.id;
+
+  return (
+    <div className="w-full max-w-md mx-auto bg-slate-900 border border-slate-800 rounded-3xl p-5 shadow-2xl text-white select-none">
+      {/* Header Info */}
+      <div className="flex items-center justify-between border-b border-slate-800 pb-4 mb-4">
+        <div>
+          <span className="text-xs text-blue-400 font-bold uppercase tracking-widest block">{sport} Controller</span>
+          <h2 className="text-xl font-black">{match.name}</h2>
+        </div>
+        <button
+          onClick={handleUndo}
+          className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-800 hover:bg-slate-700 active:bg-slate-950 text-slate-300 rounded-xl text-xs font-bold transition border border-slate-700 shadow"
+        >
+          <Undo2 className="w-4 h-4 text-amber-400" />
+          <span>Undo</span>
+        </button>
+      </div>
+
+      {/* Player Name Input Field */}
+      <div className="mb-4 bg-slate-950 p-2.5 rounded-2xl border border-slate-800 flex items-center gap-2">
+        <User className="w-4 h-4 text-slate-500" />
+        <input
+          type="text"
+          value={playerName}
+          onChange={(e) => setPlayerName(e.target.value)}
+          placeholder="Player / Scorer Name (Optional)"
+          className="bg-transparent text-xs text-white placeholder-slate-500 outline-none w-full font-medium"
+        />
+      </div>
+
+      {/* Main Scoring Buttons */}
+      {sport === 'football' && (
+        <div className="space-y-4">
+          <div className="grid grid-cols-2 gap-4">
+            {/* Home Goal +1 */}
+            <button
+              onClick={() => handleAction('goal_home', homeId, 1)}
+              className="py-8 bg-gradient-to-b from-blue-600 to-blue-800 hover:from-blue-500 hover:to-blue-700 active:scale-95 text-white font-black text-2xl rounded-2xl shadow-xl border border-blue-400/40 flex flex-col items-center justify-center gap-1 transition"
+            >
+              <span className="text-sm font-semibold opacity-90">{homeName}</span>
+              <span className="text-3xl font-mono">+1 GOAL</span>
+            </button>
+
+            {/* Away Goal +1 */}
+            <button
+              onClick={() => handleAction('goal_away', awayId, 1)}
+              className="py-8 bg-gradient-to-b from-red-600 to-red-800 hover:from-red-500 hover:to-red-700 active:scale-95 text-white font-black text-2xl rounded-2xl shadow-xl border border-red-400/40 flex flex-col items-center justify-center gap-1 transition"
+            >
+              <span className="text-sm font-semibold opacity-90">{awayName}</span>
+              <span className="text-3xl font-mono">+1 GOAL</span>
+            </button>
+          </div>
+
+          {/* Cards & Events */}
+          <div className="grid grid-cols-2 gap-3 pt-2">
+            <button
+              onClick={() => handleAction('yellow_card', homeId)}
+              className="py-3 bg-amber-500/20 text-amber-400 border border-amber-500/40 rounded-xl font-bold text-xs flex items-center justify-center gap-2 active:scale-95"
+            >
+              <AlertTriangle className="w-4 h-4" /> {homeName} YC
+            </button>
+            <button
+              onClick={() => handleAction('yellow_card', awayId)}
+              className="py-3 bg-amber-500/20 text-amber-400 border border-amber-500/40 rounded-xl font-bold text-xs flex items-center justify-center gap-2 active:scale-95"
+            >
+              <AlertTriangle className="w-4 h-4" /> {awayName} YC
+            </button>
+          </div>
+        </div>
+      )}
+
+      {sport === 'cricket' && (
+        <div className="space-y-4">
+          <div className="grid grid-cols-4 gap-2">
+            {[1, 2, 3, 4, 6].map((run) => (
+              <button
+                key={run}
+                onClick={() => handleAction('add_run', undefined, run)}
+                className="py-5 bg-gradient-to-b from-amber-600 to-amber-800 active:scale-95 text-white font-black text-2xl rounded-xl shadow border border-amber-400/30"
+              >
+                +{run}
+              </button>
+            ))}
+            <button
+              onClick={() => handleAction('add_wicket')}
+              className="py-5 bg-gradient-to-b from-red-600 to-red-800 active:scale-95 text-white font-black text-xl rounded-xl shadow border border-red-400/30"
+            >
+              WICKET
+            </button>
+          </div>
+
+          <button
+            onClick={() => handleAction('add_over')}
+            className="w-full py-4 bg-slate-800 hover:bg-slate-700 active:scale-95 text-amber-400 font-bold text-sm rounded-xl border border-slate-700 flex items-center justify-center gap-2"
+          >
+            <Zap className="w-4 h-4" /> Add +0.1 Over
+          </button>
+        </div>
+      )}
+
+      {sport === 'volleyball' && (
+        <div className="grid grid-cols-2 gap-4">
+          <button
+            onClick={() => handleAction('point_home', homeId)}
+            className="py-8 bg-gradient-to-b from-indigo-600 to-indigo-800 active:scale-95 text-white font-black text-2xl rounded-2xl shadow border border-indigo-400/40"
+          >
+            {homeName} +1 Pt
+          </button>
+          <button
+            onClick={() => handleAction('point_away', awayId)}
+            className="py-8 bg-gradient-to-b from-violet-600 to-violet-800 active:scale-95 text-white font-black text-2xl rounded-2xl shadow border border-violet-400/40"
+          >
+            {awayName} +1 Pt
+          </button>
+        </div>
+      )}
+
+      {/* Timer Controls */}
+      <div className="mt-6 pt-5 border-t border-slate-800 flex items-center justify-between gap-3">
+        <button
+          onClick={() => handleAction('timer_start')}
+          className="flex-1 py-3 bg-emerald-600 hover:bg-emerald-500 active:scale-95 text-white font-bold text-xs rounded-xl flex items-center justify-center gap-2 shadow"
+        >
+          <Play className="w-4 h-4" /> START
+        </button>
+        <button
+          onClick={() => handleAction('timer_pause')}
+          className="flex-1 py-3 bg-amber-600 hover:bg-amber-500 active:scale-95 text-white font-bold text-xs rounded-xl flex items-center justify-center gap-2 shadow"
+        >
+          <Pause className="w-4 h-4" /> PAUSE
+        </button>
+        <button
+          onClick={() => handleAction('timer_reset')}
+          className="py-3 px-4 bg-slate-800 hover:bg-slate-700 active:scale-95 text-slate-400 font-bold text-xs rounded-xl flex items-center justify-center shadow"
+        >
+          <RotateCcw className="w-4 h-4" />
+        </button>
+      </div>
+    </div>
+  );
+};
