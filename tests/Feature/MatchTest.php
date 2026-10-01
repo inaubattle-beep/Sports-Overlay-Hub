@@ -82,4 +82,44 @@ class MatchTest extends TestCase
         $undoRes->assertStatus(200);
         $this->assertEquals(0, $match->fresh()->current_state['home_score']);
     }
+
+    public function test_public_overlay_state_and_remote_score_by_token()
+    {
+        $match = GameMatch::create([
+            'sport_id' => $this->sport->id,
+            'user_id' => $this->user->id,
+            'name' => 'Public Overlay Test Match',
+            'slug' => 'public-overlay-test',
+            'home_team_id' => $this->homeTeam->id,
+            'away_team_id' => $this->awayTeam->id,
+            'current_state' => ['home_score' => 0, 'away_score' => 0],
+        ]);
+
+        $broadcast = \App\Models\BroadcastOutput::create([
+            'match_id' => $match->id,
+            'user_id' => $this->user->id,
+            'token' => 'testtoken123',
+            'is_active' => true,
+        ]);
+
+        // Get State by Token
+        $stateRes = $this->getJson("/api/v1/overlay/{$broadcast->token}/state");
+        $stateRes->assertStatus(200)
+            ->assertJsonPath('status', 'success')
+            ->assertJsonPath('match.name', 'Public Overlay Test Match');
+
+        // Remote Score by Token
+        $scoreRes = $this->postJson("/api/v1/remote/{$broadcast->token}/score", [
+            'event_type' => 'goal_home',
+            'team_id' => $this->homeTeam->id,
+            'value' => 1,
+        ]);
+        $scoreRes->assertStatus(200);
+        $this->assertEquals(1, $match->fresh()->current_state['home_score']);
+
+        // Remote Undo by Token
+        $undoRes = $this->postJson("/api/v1/remote/{$broadcast->token}/undo");
+        $undoRes->assertStatus(200);
+        $this->assertEquals(0, $match->fresh()->current_state['home_score']);
+    }
 }
