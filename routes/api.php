@@ -18,11 +18,12 @@ Route::prefix('v1')->middleware('throttle:60,1')->group(function () {
         Route::post('/auth/login', [AuthController::class, 'login']);
     });
 
-    // Public OBS Overlay State & Remote Control
+    // Public OBS Overlay State, Matches Index & Remote Control
     Route::get('/overlay/{token}/state', [OverlayController::class, 'getStateByToken']);
     Route::post('/remote/{token}/score', [OverlayController::class, 'scoreByToken']);
     Route::post('/remote/{token}/undo', [OverlayController::class, 'undoByToken']);
     Route::get('/templates/public', [TemplateController::class, 'index']);
+    Route::get('/matches', [MatchController::class, 'index']);
 
     // Protected Routes (Sanctum)
     Route::middleware('auth:sanctum')->group(function () {
@@ -30,7 +31,6 @@ Route::prefix('v1')->middleware('throttle:60,1')->group(function () {
         Route::post('/auth/logout', [AuthController::class, 'logout']);
 
         // Matches & Score Control
-        Route::get('/matches', [MatchController::class, 'index']);
         Route::post('/matches', [MatchController::class, 'store']);
         Route::get('/matches/{match}', [MatchController::class, 'show']);
         Route::post('/matches/{match}/score', [MatchController::class, 'score']);

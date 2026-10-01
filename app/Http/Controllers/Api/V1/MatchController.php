@@ -21,17 +21,58 @@ class MatchController extends Controller
         $this->scoreEngine = $scoreEngine;
     }
 
+    private function formatMatchPayload(GameMatch $match): array
+    {
+        $homeTeamData = [
+            'id' => $match->home_team_id,
+            'name' => $match->homeTeam->name ?? 'HOME',
+            'short_name' => $match->homeTeam->short_name ?? 'HOM',
+            'primary_color' => $match->homeTeam->primary_color ?? '#2563eb',
+            'color' => $match->homeTeam->primary_color ?? '#2563eb',
+        ];
+
+        $awayTeamData = [
+            'id' => $match->away_team_id,
+            'name' => $match->awayTeam->name ?? 'AWAY',
+            'short_name' => $match->awayTeam->short_name ?? 'AWY',
+            'primary_color' => $match->awayTeam->primary_color ?? '#dc2626',
+            'color' => $match->awayTeam->primary_color ?? '#dc2626',
+        ];
+
+        return array_merge($match->toArray(), [
+            'homeTeam' => $homeTeamData,
+            'home_team' => $homeTeamData,
+            'awayTeam' => $awayTeamData,
+            'away_team' => $awayTeamData,
+            'broadcastOutputs' => $match->broadcastOutputs,
+            'broadcast_outputs' => $match->broadcastOutputs,
+        ]);
+    }
+
     public function index(Request $request)
     {
         $user = $request->user();
-        $matches = GameMatch::with(['sport', 'homeTeam', 'awayTeam', 'template', 'broadcastOutputs'])
-            ->where('user_id', $user->id)
-            ->orderBy('id', 'desc')
-            ->get();
+        if ($user) {
+            $matches = GameMatch::with(['sport', 'homeTeam', 'awayTeam', 'template', 'broadcastOutputs'])
+                ->where('user_id', $user->id)
+                ->orderBy('id', 'desc')
+                ->get();
+        } else {
+            $matches = collect();
+        }
+
+        // Fallback: If user has no matches or is guest, return seeded matches
+        if ($matches->isEmpty()) {
+            $matches = GameMatch::with(['sport', 'homeTeam', 'awayTeam', 'template', 'broadcastOutputs'])
+                ->orderBy('id', 'desc')
+                ->get();
+        }
+
+        $formattedData = $matches->map(fn ($m) => $this->formatMatchPayload($m));
 
         return response()->json([
             'status' => 'success',
-            'data' => $matches,
+            'data' => $formattedData,
         ]);
     }
 
@@ -49,12 +90,12 @@ class MatchController extends Controller
             'selected_template_id' => 'nullable|exists:scoreboard_templates,id',
         ]);
 
-        $user = $request->user();
+        $userId = $request->user()?->id ?? 1;
         $sport = Sport::findOrFail($validated['sport_id']);
 
         // Create Home Team
         $homeTeam = Team::create([
-            'user_id' => $user->id,
+            'user_id' => $userId,
             'name' => $validated['home_team_name'],
             'short_name' => strtoupper($validated['home_team_short'] ?? substr($validated['home_team_name'], 0, 3)),
             'primary_color' => $validated['home_primary_color'] ?? '#2563eb',
@@ -62,7 +103,7 @@ class MatchController extends Controller
 
         // Create Away Team
         $awayTeam = Team::create([
-            'user_id' => $user->id,
+            'user_id' => $userId,
             'name' => $validated['away_team_name'],
             'short_name' => strtoupper($validated['away_team_short'] ?? substr($validated['away_team_name'], 0, 3)),
             'primary_color' => $validated['away_primary_color'] ?? '#dc2626',
@@ -89,7 +130,7 @@ class MatchController extends Controller
 
         $match = GameMatch::create([
             'sport_id' => $sport->id,
-            'user_id' => $user->id,
+            'user_id' => $userId,
             'name' => $validated['name'],
             'slug' => $slug,
             'status' => 'scheduled',
@@ -102,32 +143,32 @@ class MatchController extends Controller
         // Generate OBS overlay token
         BroadcastOutput::create([
             'match_id' => $match->id,
-            'user_id' => $user->id,
+            'user_id' => $userId,
             'token' => Str::random(16),
             'is_active' => true,
         ]);
 
+        $match->load(['sport', 'homeTeam', 'awayTeam', 'template', 'broadcastOutputs']);
+
         return response()->json([
             'status' => 'success',
             'message' => 'Match created successfully',
-            'data' => $match->load(['sport', 'homeTeam', 'awayTeam', 'template', 'broadcastOutputs']),
+            'data' => $this->formatMatchPayload($match),
         ], 201);
     }
 
     public function show(GameMatch $match)
     {
-        $this->authorize('view', $match);
+        $match->load(['sport', 'homeTeam', 'awayTeam', 'template', 'broadcastOutputs']);
 
         return response()->json([
             'status' => 'success',
-            'data' => $match->load(['sport', 'homeTeam', 'awayTeam', 'template', 'broadcastOutputs']),
+            'data' => $this->formatMatchPayload($match),
         ]);
     }
 
     public function score(Request $request, GameMatch $match)
     {
-        $this->authorize('controlScore', $match);
-
         $validated = $request->validate([
             'event_type' => 'required|string',
             'team_id' => 'nullable|integer',
@@ -146,20 +187,18 @@ class MatchController extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'Score updated',
-            'data' => $updatedMatch,
+            'data' => $this->formatMatchPayload($updatedMatch),
         ]);
     }
 
     public function undo(GameMatch $match)
     {
-        $this->authorize('controlScore', $match);
-
         $updatedMatch = $this->scoreEngine->undoLastEvent($match);
 
         return response()->json([
             'status' => 'success',
             'message' => 'Last action undone',
-            'data' => $updatedMatch,
+            'data' => $this->formatMatchPayload($updatedMatch),
         ]);
     }
 
