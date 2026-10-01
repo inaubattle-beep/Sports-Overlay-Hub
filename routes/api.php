@@ -7,6 +7,8 @@ use App\Http\Controllers\Api\V1\OverlayController;
 use App\Http\Controllers\Api\V1\WalletController;
 use App\Http\Controllers\Api\V1\TemplateController;
 use App\Http\Controllers\Api\V1\AdminController;
+use App\Http\Controllers\Api\V1\TeamController;
+use App\Http\Controllers\Api\V1\ReportController;
 
 Route::prefix('v1')->middleware('throttle:60,1')->group(function () {
     // Public Auth with strict rate limit
@@ -31,6 +33,15 @@ Route::prefix('v1')->middleware('throttle:60,1')->group(function () {
         Route::post('/matches/{match}/score', [MatchController::class, 'score']);
         Route::post('/matches/{match}/undo', [MatchController::class, 'undo']);
         Route::get('/matches/{match}/events', [MatchController::class, 'events']);
+
+        // Team Management
+        Route::get('/teams', [TeamController::class, 'index']);
+        Route::post('/teams', [TeamController::class, 'store']);
+        Route::put('/teams/{team}', [TeamController::class, 'update']);
+        Route::delete('/teams/{team}', [TeamController::class, 'destroy']);
+
+        // Reports & Analytics
+        Route::get('/reports/summary', [ReportController::class, 'summary']);
 
         // Wallet & Marketplace
         Route::get('/wallet', [WalletController::class, 'summary']);

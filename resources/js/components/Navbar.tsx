@@ -1,14 +1,14 @@
 import React from 'react';
 import { useAuthStore } from '../stores/useAuthStore';
-import { Activity, Coins, LogOut, Shield, User as UserIcon, PlusCircle, ShoppingBag } from 'lucide-react';
+import { Activity, Coins, LogOut, Shield, User as UserIcon, PlusCircle, ShoppingBag, Users, BarChart3 } from 'lucide-react';
 
 interface Props {
   onOpenWallet: () => void;
   onOpenMarketplace: () => void;
   onOpenCreateMatch: () => void;
   onOpenAuth: () => void;
-  activeView: 'dashboard' | 'admin' | 'marketplace';
-  setActiveView: (view: 'dashboard' | 'admin' | 'marketplace') => void;
+  activeView: 'dashboard' | 'teams' | 'reports' | 'admin' | 'marketplace';
+  setActiveView: (view: 'dashboard' | 'teams' | 'reports' | 'admin' | 'marketplace') => void;
 }
 
 export const Navbar: React.FC<Props> = ({
@@ -45,7 +45,7 @@ export const Navbar: React.FC<Props> = ({
         <nav className="hidden md:flex items-center gap-2">
           <button
             onClick={() => setActiveView('dashboard')}
-            className={`px-4 py-1.5 rounded-lg text-xs font-bold transition ${
+            className={`px-3 py-1.5 rounded-lg text-xs font-bold transition ${
               activeView === 'dashboard'
                 ? 'bg-blue-600/20 text-blue-400 border border-blue-500/40'
                 : 'text-slate-400 hover:text-white'
@@ -54,23 +54,45 @@ export const Navbar: React.FC<Props> = ({
             My Matches
           </button>
           <button
+            onClick={() => setActiveView('teams')}
+            className={`px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 ${
+              activeView === 'teams'
+                ? 'bg-blue-600/20 text-blue-400 border border-blue-500/40'
+                : 'text-slate-400 hover:text-white'
+            }`}
+          >
+            <Users className="w-3.5 h-3.5 text-blue-400" />
+            Team Management
+          </button>
+          <button
+            onClick={() => setActiveView('reports')}
+            className={`px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 ${
+              activeView === 'reports'
+                ? 'bg-emerald-600/20 text-emerald-400 border border-emerald-500/40'
+                : 'text-slate-400 hover:text-white'
+            }`}
+          >
+            <BarChart3 className="w-3.5 h-3.5 text-emerald-400" />
+            Reports & Analytics
+          </button>
+          <button
             onClick={() => {
               setActiveView('marketplace');
               onOpenMarketplace();
             }}
-            className={`px-4 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 ${
+            className={`px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 ${
               activeView === 'marketplace'
                 ? 'bg-amber-600/20 text-amber-400 border border-amber-500/40'
                 : 'text-slate-400 hover:text-white'
             }`}
           >
             <ShoppingBag className="w-3.5 h-3.5 text-amber-400" />
-            Template Marketplace
+            Marketplace
           </button>
           {isAdmin && (
             <button
               onClick={() => setActiveView('admin')}
-              className={`px-4 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 ${
+              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 ${
                 activeView === 'admin'
                   ? 'bg-purple-600/20 text-purple-400 border border-purple-500/40'
                   : 'text-slate-400 hover:text-white'

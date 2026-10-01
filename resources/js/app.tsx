@@ -5,13 +5,15 @@ import { Navbar } from './components/Navbar';
 import { UserDashboard } from './components/user/UserDashboard';
 import { AdminDashboard } from './components/admin/AdminDashboard';
 import { TemplateMarketplace } from './components/marketplace/TemplateMarketplace';
+import { TeamManagement } from './components/teams/TeamManagement';
+import { UserReports } from './components/reports/UserReports';
 import { WalletModal } from './components/wallet/WalletModal';
 import { MatchCreatorModal } from './components/user/MatchCreatorModal';
 import { AuthModal } from './components/auth/AuthModal';
 import { OBSOverlayView } from './components/overlay/OBSOverlayView';
 
 const App: React.FC = () => {
-  const [activeView, setActiveView] = useState<'dashboard' | 'admin' | 'marketplace'>('dashboard');
+  const [activeView, setActiveView] = useState<'dashboard' | 'teams' | 'reports' | 'admin' | 'marketplace'>('dashboard');
   const [isWalletOpen, setIsWalletOpen] = useState(false);
   const [isMarketplaceOpen, setIsMarketplaceOpen] = useState(false);
   const [isCreateMatchOpen, setIsCreateMatchOpen] = useState(false);
@@ -47,6 +49,8 @@ const App: React.FC = () => {
         {activeView === 'dashboard' && (
           <UserDashboard onOpenCreateMatch={() => setIsCreateMatchOpen(true)} />
         )}
+        {activeView === 'teams' && <TeamManagement />}
+        {activeView === 'reports' && <UserReports />}
         {activeView === 'marketplace' && (
           <TemplateMarketplace onOpenWallet={() => setIsWalletOpen(true)} />
         )}
