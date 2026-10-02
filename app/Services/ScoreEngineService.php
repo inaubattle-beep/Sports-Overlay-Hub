@@ -124,9 +124,30 @@ class ScoreEngineService
     {
         $sportCode = $match->sport->code ?? 'football';
         $isHome = ($teamId && $teamId == $match->home_team_id);
+        $playerName = $metadata['player_name'] ?? null;
+
+        // 1. Handle Dynamic Template Switch Event
+        if ($eventType === 'update_template') {
+            $slug = $playerName ?? $metadata['template_slug'] ?? 'football-glossy';
+            $state['template_slug'] = $slug;
+            $template = \App\Models\ScoreboardTemplate::where('slug', $slug)->first();
+            if ($template) {
+                $match->update(['selected_template_id' => $template->id]);
+            }
+            return $state;
+        }
+
+        // 2. Handle Broadcast Sound FX Trigger Event
+        if ($eventType === 'trigger_sound' || $eventType === 'sound_effect') {
+            $soundName = $playerName ?? $metadata['sound'] ?? 'whistle';
+            $state['last_sound_effect'] = [
+                'sound' => $soundName,
+                'timestamp' => microtime(true),
+            ];
+            return $state;
+        }
 
         $state['sport'] = $sportCode;
-        $playerName = $metadata['player_name'] ?? null;
 
         switch ($sportCode) {
             case 'gaa':

@@ -52,6 +52,32 @@ class AdminController extends Controller
         ]);
     }
 
+    public function matches(Request $request)
+    {
+        $this->authorizeAdmin($request);
+
+        $matches = GameMatch::with(['sport', 'homeTeam', 'awayTeam', 'template', 'broadcastOutputs', 'user'])
+            ->orderBy('id', 'desc')
+            ->get();
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $matches,
+        ]);
+    }
+
+    public function deleteMatch(Request $request, GameMatch $match)
+    {
+        $this->authorizeAdmin($request);
+
+        $match->delete();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Match deleted successfully by Super Admin',
+        ]);
+    }
+
     public function updateRole(Request $request, User $user)
     {
         $this->authorizeAdmin($request);

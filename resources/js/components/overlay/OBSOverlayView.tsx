@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import { GameMatch } from '../../types';
 import { ScoreboardRenderer } from '../../scoreboards/ScoreboardRenderer';
+import { soundFX } from '../../services/soundFX';
 
 interface Props {
   token: string;
@@ -10,6 +11,9 @@ interface Props {
 export const OBSOverlayView: React.FC<Props> = ({ token }) => {
   const [match, setMatch] = useState<GameMatch | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const lastSoundTimestamp = useRef<number>(0);
+  const prevHomeScore = useRef<number | null>(null);
+  const prevAwayScore = useRef<number | null>(null);
 
   const cleanToken = token ? token.split('?')[0].replace(/\/$/, '') : '';
 
@@ -17,14 +21,36 @@ export const OBSOverlayView: React.FC<Props> = ({ token }) => {
     try {
       const res = await axios.get(`/api/v1/overlay/${cleanToken}/state`);
       if (res.data?.match) {
-        setMatch(res.data.match);
+        const newMatch: GameMatch = res.data.match;
+        const state = newMatch.current_state || (newMatch as any).state || {};
+
+        // Sound Trigger Detection
+        const soundFxMeta = state.last_sound_effect;
+        if (soundFxMeta?.timestamp && soundFxMeta.timestamp > lastSoundTimestamp.current) {
+          lastSoundTimestamp.current = soundFxMeta.timestamp;
+          soundFX.playEffect(soundFxMeta.sound);
+        }
+
+        // Auto Goal / Point Score Sound Detection
+        const currentHome = state.home_score ?? 0;
+        const currentAway = state.away_score ?? 0;
+        if (prevHomeScore.current !== null && (currentHome > prevHomeScore.current || currentAway > (prevAwayScore.current ?? 0))) {
+          if (state.sport === 'gaa') {
+            soundFX.playChime();
+          } else {
+            soundFX.playGoalSiren();
+          }
+        }
+        prevHomeScore.current = currentHome;
+        prevAwayScore.current = currentAway;
+
+        setMatch(newMatch);
         setError(null);
       } else {
         setError('No match state returned');
       }
     } catch (err: any) {
       if (err.response?.status === 429) {
-        // Retain active overlay match graphic on screen if rate limited
         return;
       }
       setError(err.response?.data?.message || 'Failed to load overlay state');

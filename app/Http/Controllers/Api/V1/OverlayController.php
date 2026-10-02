@@ -57,9 +57,11 @@ class OverlayController extends Controller
             'color' => $match->awayTeam->primary_color ?? '#dc2626',
         ];
 
+        $templateSlug = $state['template_slug'] ?? $match->template->slug ?? 'football-glossy';
+
         $templateData = [
             'id' => $match->template->id ?? 1,
-            'slug' => $match->template->slug ?? 'football-glossy',
+            'slug' => $templateSlug,
             'name' => $match->template->name ?? 'Football Glossy',
         ];
 

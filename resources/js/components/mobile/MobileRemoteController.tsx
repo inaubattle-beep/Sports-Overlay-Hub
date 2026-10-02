@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { GameMatch } from '../../types';
-import { Play, Pause, RotateCcw, Undo2, Zap, AlertTriangle, User, Lock, Unlock, QrCode, HelpCircle } from 'lucide-react';
+import { soundFX } from '../../services/soundFX';
+import { Play, Pause, RotateCcw, Undo2, Zap, AlertTriangle, User, Lock, Unlock, QrCode, HelpCircle, Volume2 } from 'lucide-react';
 
 interface Props {
   match: GameMatch;
@@ -146,6 +147,59 @@ export const MobileRemoteController: React.FC<Props> = ({ match, onScore, onUndo
           </div>
         </div>
       )}
+
+      {/* Broadcast Sound FX Control Bar */}
+      <div className="mb-3 p-2.5 bg-slate-950/80 border border-slate-800 rounded-2xl flex items-center justify-between text-xs">
+        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest flex items-center gap-1">
+          <Volume2 className="w-3.5 h-3.5 text-blue-400" /> Sound FX:
+        </span>
+        <div className="flex items-center gap-1.5 overflow-x-auto">
+          <button
+            onClick={() => {
+              triggerHaptic();
+              soundFX.playWhistle();
+              onScore('trigger_sound', undefined, 1, 'whistle');
+            }}
+            className="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 rounded-xl font-bold text-[11px] transition"
+            title="Play Whistle"
+          >
+            🎺 Whistle
+          </button>
+          <button
+            onClick={() => {
+              triggerHaptic();
+              soundFX.playGoalSiren();
+              onScore('trigger_sound', undefined, 1, 'siren');
+            }}
+            className="px-2.5 py-1 bg-red-950/80 hover:bg-red-900 text-red-300 border border-red-800 rounded-xl font-bold text-[11px] transition"
+            title="Play Goal Siren"
+          >
+            🚨 Siren
+          </button>
+          <button
+            onClick={() => {
+              triggerHaptic();
+              soundFX.playBuzzer();
+              onScore('trigger_sound', undefined, 1, 'buzzer');
+            }}
+            className="px-2.5 py-1 bg-amber-950/80 hover:bg-amber-900 text-amber-300 border border-amber-800 rounded-xl font-bold text-[11px] transition"
+            title="Play Shot Clock Buzzer"
+          >
+            🏀 Buzzer
+          </button>
+          <button
+            onClick={() => {
+              triggerHaptic();
+              soundFX.playChime();
+              onScore('trigger_sound', undefined, 1, 'chime');
+            }}
+            className="px-2.5 py-1 bg-emerald-950/80 hover:bg-emerald-900 text-emerald-300 border border-emerald-800 rounded-xl font-bold text-[11px] transition"
+            title="Play GAA Chime"
+          >
+            ☘️ Chime
+          </button>
+        </div>
+      </div>
 
       {/* Player Name Input Field */}
       <div className="mb-4 bg-slate-950 p-2.5 rounded-2xl border border-slate-800 flex items-center gap-2">

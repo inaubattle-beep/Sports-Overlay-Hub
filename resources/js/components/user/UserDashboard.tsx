@@ -172,29 +172,85 @@ export const UserDashboard: React.FC<Props> = ({ onOpenCreateMatch }) => {
                 </div>
               </div>
 
-              {/* Template Canvas Selector Options */}
+              {/* Dynamic Live Template Canvas Selector */}
               <div className="flex items-center gap-2 overflow-x-auto pb-1 border-b border-slate-800 pt-1">
                 <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1 shrink-0">
-                  <LayoutTemplate className="w-3.5 h-3.5 text-blue-400" /> Canvas Options:
+                  <LayoutTemplate className="w-3.5 h-3.5 text-blue-400" /> Switch Live OBS Template:
                 </span>
-                {canvasOptions.map((opt) => (
+                {canvasOptions.map((opt) => {
+                  const activeSlug = activeMatch?.current_state?.template_slug || activeMatch?.template?.slug || selectedTemplateSlug;
+                  const isSelected = activeSlug === opt.slug;
+                  return (
+                    <button
+                      key={opt.slug}
+                      onClick={() => {
+                        setSelectedTemplateSlug(opt.slug);
+                        sendScoreEvent('update_template', undefined, undefined, opt.slug);
+                      }}
+                      className={`px-3 py-1.5 rounded-xl text-xs font-bold shrink-0 transition border ${
+                        isSelected
+                          ? 'bg-blue-600 text-white border-blue-400 shadow'
+                          : 'bg-slate-950 text-slate-400 border-slate-800 hover:text-white'
+                      }`}
+                    >
+                      {opt.label}
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Sound FX Broadcast Control Bar */}
+              <div className="flex items-center justify-between gap-2 p-3 bg-slate-950/80 rounded-2xl border border-slate-800 text-xs">
+                <span className="font-bold text-slate-400 uppercase tracking-widest text-[10px] flex items-center gap-1">
+                  🔊 Live Sound FX:
+                </span>
+                <div className="flex items-center gap-2 overflow-x-auto">
                   <button
-                    key={opt.slug}
-                    onClick={() => setSelectedTemplateSlug(opt.slug)}
-                    className={`px-3 py-1.5 rounded-xl text-xs font-bold shrink-0 transition border ${
-                      selectedTemplateSlug === opt.slug
-                        ? 'bg-blue-600 text-white border-blue-400 shadow'
-                        : 'bg-slate-950 text-slate-400 border-slate-800 hover:text-white'
-                    }`}
+                    onClick={() => {
+                      soundFX.playWhistle();
+                      sendScoreEvent('trigger_sound', undefined, undefined, 'whistle');
+                    }}
+                    className="px-3 py-1 bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-700 rounded-xl font-bold transition flex items-center gap-1"
                   >
-                    {opt.label}
+                    🎺 Whistle
                   </button>
-                ))}
+                  <button
+                    onClick={() => {
+                      soundFX.playGoalSiren();
+                      sendScoreEvent('trigger_sound', undefined, undefined, 'siren');
+                    }}
+                    className="px-3 py-1 bg-red-950/80 hover:bg-red-900 text-red-300 border border-red-800 rounded-xl font-bold transition flex items-center gap-1"
+                  >
+                    🚨 Goal Siren
+                  </button>
+                  <button
+                    onClick={() => {
+                      soundFX.playBuzzer();
+                      sendScoreEvent('trigger_sound', undefined, undefined, 'buzzer');
+                    }}
+                    className="px-3 py-1 bg-amber-950/80 hover:bg-amber-900 text-amber-300 border border-amber-800 rounded-xl font-bold transition flex items-center gap-1"
+                  >
+                    🏀 Shot Clock Buzzer
+                  </button>
+                  <button
+                    onClick={() => {
+                      soundFX.playChime();
+                      sendScoreEvent('trigger_sound', undefined, undefined, 'chime');
+                    }}
+                    className="px-3 py-1 bg-emerald-950/80 hover:bg-emerald-900 text-emerald-300 border border-emerald-800 rounded-xl font-bold transition flex items-center gap-1"
+                  >
+                    ☘️ GAA Chime
+                  </button>
+                </div>
               </div>
 
               {/* Render Canvas Preview */}
               <div className="bg-slate-950 rounded-2xl border border-slate-800 p-4 flex items-center justify-center overflow-x-auto min-h-[220px]">
-                <ScoreboardRenderer match={activeMatch} templateSlug={selectedTemplateSlug} scale={0.8} />
+                <ScoreboardRenderer
+                  match={activeMatch}
+                  templateSlug={activeMatch?.current_state?.template_slug || activeMatch?.template?.slug || selectedTemplateSlug}
+                  scale={0.8}
+                />
               </div>
             </div>
 

@@ -62,6 +62,8 @@ Route::prefix('v1')->group(function () {
         // Admin Routes
         Route::get('/admin/stats', [AdminController::class, 'stats']);
         Route::get('/admin/users', [AdminController::class, 'users']);
+        Route::get('/admin/matches', [AdminController::class, 'matches']);
+        Route::delete('/admin/matches/{match}', [AdminController::class, 'deleteMatch']);
         Route::put('/admin/users/{user}', [AdminController::class, 'updateRole']);
         Route::post('/admin/users/{user}/coins', [AdminController::class, 'adjustCoins']);
     });

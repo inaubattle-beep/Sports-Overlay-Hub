@@ -64,16 +64,18 @@ class MatchController extends Controller
     public function index(Request $request)
     {
         $user = $request->user();
-        if ($user) {
-            $matches = GameMatch::with(['sport', 'homeTeam', 'awayTeam', 'template', 'broadcastOutputs'])
-                ->where('user_id', $user->id)
-                ->orderBy('id', 'desc')
-                ->get();
-        } else {
-            $matches = collect();
+        $query = GameMatch::with(['sport', 'homeTeam', 'awayTeam', 'template', 'broadcastOutputs'])
+            ->orderBy('id', 'desc');
+
+        if ($request->has('user_id')) {
+            $query->where('user_id', $request->query('user_id'));
+        } elseif ($user && !$request->has('all')) {
+            $query->where('user_id', $user->id);
         }
 
-        // Fallback: If user has no matches or is guest, return seeded matches
+        $matches = $query->get();
+
+        // Fallback: If user query returned empty, fetch all matches so newly created or seeded matches are accessible
         if ($matches->isEmpty()) {
             $matches = GameMatch::with(['sport', 'homeTeam', 'awayTeam', 'template', 'broadcastOutputs'])
                 ->orderBy('id', 'desc')
